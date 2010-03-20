@@ -1,8 +1,8 @@
 import java.util.ArrayList;
-import java.util.Collections;
+//import java.util.Collections;
 import java.util.Random;
 
-public class Population {
+public class Population implements Cloneable {
 
 	private ArrayList<Individual> population;
 	private int size;
@@ -11,7 +11,10 @@ public class Population {
 	public Population(int size, int individualSize) {
 		this.size = size;
 		this.population = new ArrayList<Individual>(size);
-		this.individualSize = this.individualSize;
+		
+		this.individualSize = individualSize;
+		if( this.individualSize < 1 )
+			this.individualSize = 0;
 		
 		for (int i = 0; i < this.size; i++) {
 			this.population.add(i, new Individual(individualSize));
@@ -23,7 +26,18 @@ public class Population {
 		this.population = population;
 		this.size = population.size();
 	}
-	
+	/*Para poder hacer copias de poblaciones */
+	@SuppressWarnings("unchecked")
+	public Object clone(){
+        Population obj=null;
+        try{
+            obj=(Population)super.clone();
+        }catch(CloneNotSupportedException ex){
+            System.out.println("No se puede duplicar");
+        }        
+        obj.population = (ArrayList<Individual>)obj.population.clone();
+        return obj;
+    }
 	public ArrayList<Individual> selection(int cant) {
 		ArrayList<Individual> resp = new ArrayList<Individual>(cant);
 		ArrayList<Double> r = new ArrayList<Double>(cant);
@@ -71,11 +85,21 @@ public class Population {
 		System.out.print("Aptitudes Acumuladas\t");
 		System.out.println(accumulatedAptitud);
 		*/
+		
+		for( int i=0 ; i < r.size() ; i++ ){
+			for( int j=0; j< accumulatedAptitud.size() ; j++ )
+				if( r.get(i) < accumulatedAptitud.get(j) ){					
+					resp.add( i, (Individual)population.get(j).clone() );
+					break;
+				}					
+		}
+		/*
+		 
 		int j = 0;
 		int i = 0;
 		
 		if ( r.get(j) < accumulatedAptitud.get(i)) {
-			//System.out.println("Selecciono a " + i);
+			System.out.println("Selecciono a " + i);
 			resp.add(j, population.get(i));
 			j++;
 		}
@@ -95,7 +119,7 @@ public class Population {
 			}
 			
 		}
-		
+		*/
 		/*for ( int i = 1; i < this.size && j < cant; i++ ) {
 			if ( r.get(j) > accumulatedAptitud.get(i-1) && r.get(j) < accumulatedAptitud.get(i) ) {
 				System.out.println("Selecciono a " + i);
@@ -111,7 +135,11 @@ public class Population {
 	}
 
 	public ArrayList<Individual> replacement ( int cant ) {
-		ArrayList<Individual> newPopulation = new ArrayList<Individual>(cant);
+		ArrayList<Individual> newPopulation = this.selection(cant);
+		this.setPopulation(newPopulation);
+		
+		return newPopulation;
+		/*
 		Random randomGenerator = new Random();
 		ArrayList<Double> r = new ArrayList<Double>(cant);
 		ArrayList<Double> aptitud = new ArrayList<Double>(this.size);
@@ -144,7 +172,7 @@ public class Population {
 			accumulatedAptitud.add(i, accumulatedAptitud.get(i - 1) + relativeAptitud.get(i));
 		}
 		
-		/*System.out.print("Ri\t");
+		System.out.print("Ri\t");
 		System.out.println(r);
 		
 		System.out.print("Aptitudes\t");
@@ -158,7 +186,7 @@ public class Population {
 		
 		System.out.print("Aptitudes Acumuladas\t");
 		System.out.println(accumulatedAptitud);
-		*/
+		
 		int j = 0;
 		int i = 0;
 		
@@ -187,6 +215,7 @@ public class Population {
 		this.setPopulation(newPopulation);
 		
 		return newPopulation;
+		*/
 	}
 	
 	public void addIndividual (Individual individual) {
@@ -200,72 +229,12 @@ public class Population {
 			population.get(i).print();
 		}
 	}
-
-	public static void main(String args[]) {
-
-		/*
-		 * Individual individuo1 = new Individual(6); Individual individuo2 =
-		 * new Individual(6); ArrayList<Individual> children = new
-		 * ArrayList<Individual>(2);
-		 * 
-		 * individuo1.print(); individuo2.print();
-		 * 
-		 * System.out.println("Cross Over");
-		 * 
-		 * children = individuo1.crossOver(individuo2); children.get(0).print();
-		 * children.get(1).print();
-		 * 
-		 * //System.out.println("Mutate..."); //individuo.mutate(0.1);
-		 * //individuo.print();
-		 */
-		int currentGeneration = 0;
-		int populationSize = 4;
-		int individualSize = 5;
-		double pMut = 0.5;
-		
-		Population population = new Population(populationSize, individualSize);
-		ArrayList<Individual> parents;
-		ArrayList<Individual> offspring;
-		
-		//System.out.println("Poblacion Inicial");
-		//population.print();
-		
-		while ( currentGeneration < 100 ) {
-			//System.out.println("Poblacion inicial");
-			//population.print();
-			parents = population.selection(2);
-			//System.out.println("Parents");
-			//System.out.println(parents);
-			offspring = parents.get(0).crossOver(parents.get(1));
-			//offspring = parents.get(0).reproduction(parents.get(1));
-			//System.out.println("Offspring");
-			//offspring.get(0).print();
-			//offspring.get(1).print();
-			//System.out.print("Antes de mutar\t\t");
-			//offspring.get(0).print();
-			offspring.get(0).mutate(pMut);
-			offspring.get(1).mutate(pMut);
-			//System.out.println("Despuse de mutar");
-			//offspring.get(0).print();
-			//offspring.get(1).print();
-			
-			population.addIndividual(offspring.get(0));
-			population.addIndividual(offspring.get(1));
-			population.replacement(populationSize);
-			
-			//population.setPopulation(population.selection(populationSize));
-			//System.out.println("Poblacion Final");
-			//population.print();
-			System.out.println("Iteracion " + currentGeneration);
-			//System.out.println("Population size " + populationSize);
-			currentGeneration++;
+	public String toString(){
+		StringBuffer resp = new StringBuffer();
+		for (int i = 0; i < this.size; i++) {
+			resp.append("Individuo " + i + ": " + population.get(i).toString() + "\n");
 		}
-		
-		System.out.println("Poblacion Final luego de " + currentGeneration + " generaciones");
-		population.print();
-		
-		//population.replacement(4);
-		
-		//population.selection(2);
-	}
+		return resp.toString();
+	}		
+	
 }
