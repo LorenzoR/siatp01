@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Individual {
+public class Individual implements Cloneable{
 
 	private ArrayList<Boolean> chromosome;
 	private int size;
@@ -50,13 +50,41 @@ public class Individual {
 		System.out.print("\n");
 
 	}
-
+	/*Para poder usar println() en forma transparente*/
+	public String toString() {
+		StringBuffer resp = new StringBuffer();
+		
+		for (int i = 0; i < this.size; i++) {
+			if ( this.chromosome.get(i) ) {
+				resp.append('1');
+			}
+			else {
+				resp.append('0');
+			}
+		}
+		return resp.toString();		
+	}
+	/*Para poder hacer copias de los individuos en caso un individuo sea seleccionado 2 veces
+	 * Es decir en ese caso deben ser DOS INDIVIDUOS DIFERENTES */
+	@SuppressWarnings("unchecked")
+	public Object clone(){
+        Individual obj=null;
+        try{
+            obj=(Individual)super.clone();
+        }catch(CloneNotSupportedException ex){
+            System.out.println("No se puede duplicar");
+        }        
+        obj.chromosome = (ArrayList<Boolean>)obj.chromosome.clone();
+        return obj;
+    }
+	
 	public void mutate(double pMut) {
 
 		Random randomGenerator = new Random();
-
-		for (int i = 0; i < this.size; i++) {
+		
+		for (int i = 0; i < this.size; i++) {			
 			if (randomGenerator.nextDouble() < pMut) {
+				System.out.println(" --> Mutation in bit " + i);
 				this.chromosome.set(i, !this.chromosome.get(i));
 			}
 
@@ -74,7 +102,7 @@ public class Individual {
 		children.add(1, new Individual(individual.getChromosome()));
 		boolean aux;
 
-		//System.out.println("Cross Point: " + crossPoint);
+		System.out.println("Cross Point: " + crossPoint);
 
 		for (int i = crossPoint + 1; i < this.size; i++) {
 			aux = children.get(0).getChromosome(i);
