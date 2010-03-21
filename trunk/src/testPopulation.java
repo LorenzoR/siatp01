@@ -24,9 +24,9 @@ public class testPopulation {
 		 * //individuo.print();
 		 */
 		int currentGeneration = 0;
-		int populationSize = 4;
-		int individualSize = 5;
-		double pMut = 0.1;
+		int populationSize = 10;
+		int individualSize = 31;
+		double pMut = 0.3;
 		
 		Population population = new Population(populationSize, individualSize);
 		Population originalPopulation = (Population)population.clone();
@@ -36,7 +36,7 @@ public class testPopulation {
 		//System.out.println("Poblacion Inicial");
 		//population.print();
 		
-		while ( currentGeneration < 100 ) {
+		while ( currentGeneration < 10000 ) {
 			//System.out.println("Poblacion inicial");
 			//population.print();
 			
@@ -75,12 +75,42 @@ public class testPopulation {
 			currentGeneration++;
 		}
 		
-		System.out.println("\nPoblacion Inicial\n" + originalPopulation);
-		//originalPopulation.print();
+		//System.out.println("\nPoblacion Inicial\n" + originalPopulation);
+		System.out.println("\nPoblacion Inicial\n");
+		originalPopulation.print();
 		System.out.println("Poblacion Final luego de " + currentGeneration + " generaciones");
 		population.print();
 		
-	
+		/*ArrayList<Boolean> auxBool = new ArrayList<Boolean>(21);
+		
+		for ( int i = 0; i < 31; i++ )
+			auxBool.add(i, true);
+		
+		auxBool.set(30, false);
+		
+		Individual ind = new Individual(auxBool);
+		
+		ind.print();
+		ind.decode();
+		
+		for ( int i = 0; i < 31; i++ )
+			auxBool.set(i, true);
+		
+		Individual ind2 = new Individual(auxBool);
+		
+		ind2.print();
+		ind2.decode();
+		
+		for ( int i = 0; i < 31; i++ )
+			auxBool.set(i, true);
+		
+		auxBool.set(0, false);
+		
+		Individual ind3 = new Individual(auxBool);
+		
+		ind3.print();
+		ind3.decode();
+	*/
 	}
 
 }
