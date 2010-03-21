@@ -47,6 +47,8 @@ public class Individual implements Cloneable{
 			}
 		}
 		
+		System.out.print(" [ f(" + this.decode() + ") = " + this.getFitness() + " ] ");
+		
 		System.out.print("\n");
 
 	}
@@ -114,21 +116,30 @@ public class Individual implements Cloneable{
 
 	}
 
-	//public ArrayList<Individual> reproduction (Individual individual) {
-	//	ArrayList<Individual> offspring = this.crossOver(individual);
-	//	offspring.get(0).mutate
-	//}
-	
 	public double getFitness() {
 
 		double sum = 0;
+		double decode = this.decode();
 		
-		for ( int i = 0; i < this.size; i++ ) {
-			if ( this.chromosome.get(i))
-				sum++;
-		}
+		sum = 0.8 * ( 1 + Math.sin(decode * Math.PI * 40)) + decode * 1.6;
 		
 		return sum;
+	}
+	
+	public double decode() {
+		
+		double decode = 0;
+		int pow = 0;
+		
+		for ( int i = this.size - 1; i >= 0; i--, pow++ ) {
+			if ( this.chromosome.get(i) ) {
+				decode += Math.pow(2, pow);
+			}
+		}
+		
+		decode = decode * ( 1 / (Math.pow(2,this.size) - 1) );
+		
+		return decode;
 	}
 
 }
