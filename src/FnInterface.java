@@ -11,14 +11,14 @@ public interface FnInterface {
 	
 	//Enumerativo que define si se minimiza o maximiza
 	public enum ALG_TYPE { MINIMIZE, MAXIMIZE };
-	public ALG_TYPE algType = FnInterface.ALG_TYPE.MAXIMIZE; 
+	public ALG_TYPE algType = FnInterface.ALG_TYPE.MINIMIZE; 
 	
 	//Definiciones que caracterizan a la poblacion y su evolucion	 
-	public int POPULATION_SIZE = 50;//50;
+	public int POPULATION_SIZE = 100;//50;
 	public double MUTATION_PROBABILITY = 0.1;	
-	public int SELECTION_SIZE = 10;//4;
+	public int SELECTION_SIZE = 20;//4;
 	public int MAX_GENERATIONS = 1000;//100;
-	public double HIGHEST_PERCENTAGE = 0.8;
+	public double HIGHEST_PERCENTAGE = 0.7;
 	
 	//Definiciones que caracterizan al individuo y su representacion
 	public int CHROMOSOME_SIZE = 6; //4;

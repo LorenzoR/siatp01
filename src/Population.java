@@ -10,7 +10,7 @@ public class Population implements Cloneable {
 	//Inteface donde se encuentran las funciones que impone el ambiente 
 	//particular para el problema. Como se determinara la funcion segun
 	//se especialize la poblacion, suprimimos los warnings
-	@SuppressWarnings("unused")
+	
 	protected FnImplement myFunctions;
 	
 	public Population(int size, int individualSize) {

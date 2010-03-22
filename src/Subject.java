@@ -1,4 +1,5 @@
 
+@SuppressWarnings("unchecked")
 public class Subject implements Comparable {
 	private Individual individual;
 	private int frequency;
