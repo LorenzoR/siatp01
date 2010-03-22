@@ -62,7 +62,7 @@ public class Engine {
 		}
 		return population;
 	}
-	
+	//Para borrar ... ya no se usa esta funcion
 	public ArrayList<Boolean> Encode( double fenotype ){
 		//Falta completar la codificacion	
 		//Esta codificacion sigue el ejemplo de Lore		
