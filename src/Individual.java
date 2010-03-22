@@ -24,7 +24,9 @@ public class Individual implements Cloneable{
 	public boolean getChromosome(int index) {
 		return this.chromosome.get(index);
 	}
-
+	public int getSize(){
+		return this.size;
+	}
 	public ArrayList<Boolean> getChromosome() {
 		return this.chromosome;
 	}
@@ -46,8 +48,6 @@ public class Individual implements Cloneable{
 				System.out.print("0");
 			}
 		}
-		
-		System.out.print(" [ f(" + this.decode() + ") = " + this.getFitness() + " ] ");
 		
 		System.out.print("\n");
 
@@ -86,7 +86,7 @@ public class Individual implements Cloneable{
 		
 		for (int i = 0; i < this.size; i++) {			
 			if (randomGenerator.nextDouble() < pMut) {
-				System.out.println(" --> Mutation in bit " + i);
+				System.out.println("\t  --> Mutation in bit " + i);
 				this.chromosome.set(i, !this.chromosome.get(i));
 			}
 
@@ -94,17 +94,28 @@ public class Individual implements Cloneable{
 
 	}
 
+	public boolean equals( Object obj){		
+		if( obj == null || !(obj instanceof Individual ) )
+			return false;
+		
+		Individual aux = (Individual)obj;
+				
+		return size == aux.getSize() && chromosome.equals(aux.getChromosome());		
+	}
+	
 	public ArrayList<Individual> crossOver(Individual individual) {
 
 		Random randomGenerator = new Random();
 		int crossPoint = (int) Math.round(randomGenerator.nextDouble()
 				* (this.size - 1));
+		
+		
 		ArrayList<Individual> children = new ArrayList<Individual>(2);
 		children.add(0, new Individual(this.getChromosome()));
 		children.add(1, new Individual(individual.getChromosome()));
 		boolean aux;
 
-		System.out.println("Cross Point: " + crossPoint);
+		System.out.println("\t** Cross Point: " + crossPoint);
 
 		for (int i = crossPoint + 1; i < this.size; i++) {
 			aux = children.get(0).getChromosome(i);
@@ -116,30 +127,21 @@ public class Individual implements Cloneable{
 
 	}
 
+	//public ArrayList<Individual> reproduction (Individual individual) {
+	//	ArrayList<Individual> offspring = this.crossOver(individual);
+	//	offspring.get(0).mutate
+	//}
+	
 	public double getFitness() {
 
 		double sum = 0;
-		double decode = this.decode();
-		
-		sum = 0.8 * ( 1 + Math.sin(decode * Math.PI * 40)) + decode * 1.6;
-		
-		return sum;
-	}
-	
-	public double decode() {
-		
-		double decode = 0;
-		int pow = 0;
-		
-		for ( int i = this.size - 1; i >= 0; i--, pow++ ) {
-			if ( this.chromosome.get(i) ) {
-				decode += Math.pow(2, pow);
-			}
+		System.out.println("COMMON FITHNESS");
+		for ( int i = 0; i < this.size; i++ ) {
+			if ( this.chromosome.get(i))
+				sum++;
 		}
 		
-		decode = decode * ( 1 / (Math.pow(2,this.size) - 1) );
-		
-		return decode;
+		return sum;
 	}
 
 }
