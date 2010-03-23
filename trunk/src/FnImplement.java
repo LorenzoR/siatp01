@@ -4,14 +4,7 @@ import java.util.Random;
 
 public class FnImplement implements FnInterface {
 
-	public double decode( ArrayList<Boolean> chromosome ){
-		/*
-		double sum = 0;
-		for( int i=0; i< chromosome.size(); i++ )
-			if( chromosome.get(i) )
-				sum = sum + Math.pow(2.0, -(i+1) );
-		return sum;
-		*/		
+	public double decode( ArrayList<Boolean> chromosome ){		
  		double decode = 0;
         int pow = 0;
         

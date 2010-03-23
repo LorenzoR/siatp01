@@ -1,8 +1,15 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-//Clase que implementa un engine que usa algoritmos geneticos
-//Las definiciones que necesita el engine estan en la interface FnInterface
+/*
+ * CLASE: ENGINE
+ * =============
+ * Clase que implementa el engine desarrollado. 
+ * Usa algoritmos geneticos para hacer evolucionar una poblacion
+ * Las definiciones que caracterizan la evolucion estan en la interface FnInterface
+ * Statistics stats, es una instancia de la libreria de calculos estadisticos
+ * que se aplican sobre la poblacion
+*/
 public class Engine {
 	private int chromosomeSize; 
 	private int populationSize;
@@ -38,10 +45,11 @@ public class Engine {
 	}
 	
 	public Population populationInit(FnInterface.ALG_TYPE type ){
-		Population population;
-		
-		//Creo una poblacion con CERO individuos, y defino si voy
-		//a minimizar o maximizar la funcion
+		Population population;		
+		/* Creo una poblacion con CERO individuos. Esta poblacion es una
+		 * especializacion de la clase Population. La subclase a instanciar
+		 * depende del tipo de evolucion que analizamos (Maximizar o minimizar)
+		 */
 		if( type == FnInterface.ALG_TYPE.MINIMIZE )			
 			population = new PopulationMin(0, chromosomeSize);
 		else
@@ -53,94 +61,103 @@ public class Engine {
 			Random number = new Random();
 			double fenotype = number.nextDouble();
 			
-			//Y lo codifico en un GENOTIPO : estructura que guarda cromosomas en determinados locus
-			//En nuestro caso, hay un solo locus: 1 sola posicion
-			//Un cromosoma: string de valores booleanos			
+			/* Y lo codifico en un GENOTIPO : estructura que guarda cromosomas
+			 *  en determinados locus. En nuestro caso, hay un solo locus
+			 *  Un cromosoma : es un ArrayList de valores booleanos
+			 */  			
 			ArrayList<Boolean> chromosome = myFunctions.encode(fenotype, FnInterface.CHROMOSOME_SIZE );
 			Individual genotype = new Individual( chromosome );			
 			population.addIndividual(genotype);			
 		}
 		return population;
 	}
-	//Para borrar ... ya no se usa esta funcion
-	public ArrayList<Boolean> Encode( double fenotype ){
-		//Falta completar la codificacion	
-		//Esta codificacion sigue el ejemplo de Lore		
-		Random number = new Random();
-		ArrayList<Boolean> chromosome = new ArrayList<Boolean>(this.chromosomeSize);
-		for (int i = 0; i < this.chromosomeSize; i++)
-			chromosome.add(i, number.nextBoolean());		
-		
-		return chromosome;		
-	}
 	
-	public boolean EndCondition(Population population){
-		//Corta por un numero maximo de generaciones
-		//return this.currentGeneration >= FnInterface.MAX_GENERATIONS;
-		
+	public boolean EndCondition(Population population){		
 		double percentage;
 		Subject resultSubject = new Subject(null, 0);
-		stats.setPopulation(population);
-		percentage = stats.getMostFrequentSubject(resultSubject);
-		//return percentage >= FnInterface.HIGHEST_PERCENTAGE;
 		
+		stats.setPopulation(population);
+		percentage = stats.getMostFrequentSubject(resultSubject);		
+		
+		/* El criterio de corte se alcanza cuando un individuo ocupa
+		 * un porcentaje dado de la poblacion. Esto se determina 
+		 * mediante la constante HIGHEST_PERFORMANCE
+		 * En caso la convergencia sea muy lenta y no se alcanze dicho
+		 * porcentaje, se corta al llegar a MAX_GENERATIONS 
+		 */
 		if( this.currentGeneration >= FnInterface.MAX_GENERATIONS )
 			return true;
 		if( percentage >= FnInterface.HIGHEST_PERCENTAGE ){
-			System.out.println("The ONE = " +  resultSubject.getIndividual() + "\t% = " + percentage);
+			//System.out.println("The ONE = " +  resultSubject.getIndividual() + "\t% = " + percentage);
 			return true;
 		}
-		else
-			System.out.println("NOT YET, the best until now = " +  resultSubject.getIndividual() + "\t% = " + percentage);
+		else{
+			//System.out.println("NOT YET, the best until now = " +  resultSubject.getIndividual() + "\t% = " + percentage);
 			return false;
+		}
 	}
 	public ArrayList<Individual> selection( Population population ){
-		//Solo implementa RULETA
 		ArrayList<Individual> resp = population.selection(selectionSize);
-		System.out.println("\tSelected parents = " + resp);
+		//System.out.println("\tSelected parents = " + resp);
 		return resp;
 	}
 	
 	public ArrayList<Individual> reproduction( ArrayList<Individual> parents ){
-		ArrayList<Individual> offspring;	
-		ArrayList<Individual> finalOffspring = new ArrayList<Individual>(parents.size());
+		ArrayList<Individual> offspring;		
+		ArrayList<Individual> finalOffspring = new ArrayList<Individual>(parents.size());		
 		
-		//offspring = parents.get(0).crossOver(parents.get(1));
 		for( int i=0; i<parents.size(); i++ ){
 			offspring = parents.get(i).crossOver(parents.get(i+1));
-			System.out.println("\tCrossOver result = " + offspring );
-			
-			System.out.println("\t** Offspring " + i + " Mutation");
+			//System.out.println("\tCrossOver result = " + offspring );			
+			//System.out.println("\t** Offspring " + i + " Mutation");
 			offspring.get(0).mutate(pMut);
-			System.out.println("\t** Offspring " + (i+1) + " Mutation");
+			//System.out.println("\t** Offspring " + (i+1) + " Mutation");
 			offspring.get(1).mutate(pMut);
-			System.out.println("\tMutation result  = " + offspring );			
+			//System.out.println("\tMutation result  = " + offspring );			
 			finalOffspring.add(offspring.get(0));
 			finalOffspring.add(offspring.get(1));
 			i++;
 		}				
-		System.out.println("\tFinal offspring result  = " + finalOffspring );
+		//System.out.println("\tFinal offspring result  = " + finalOffspring );
 		return finalOffspring;
 	}
 	
-	public Population replacement( Population population, ArrayList<Individual> offspring){
-		//population.addIndividual(offspring.get(0));
-		//population.addIndividual(offspring.get(1));
-
+	public Population replacement( Population population, ArrayList<Individual> offspring){		
 		for( int i=0 ; i<offspring.size() ; i++ ){
 			population.addIndividual(offspring.get(i));
 		}
 		population.replacement(populationSize);
 		return population;
 	}
-	public Individual getSelectedIndividual(Population population) {
+	
+	public double getSelectedIndividual(Population population, Individual selectedIndividual) {		
 		double percentage;
 		Subject resultSubject = new Subject(null, 0);
-		percentage = stats.getMostFrequentSubject(resultSubject);
-		System.out.println("PERCENTAGE = " + percentage);
-		return resultSubject.getIndividual();
+		
+		percentage = stats.getMostFrequentSubject(resultSubject);		
+		//System.out.println("PERCENTAGE = " + percentage);
+		selectedIndividual.setChromosome(resultSubject.getIndividual().getChromosome());
+		return percentage;
 	}
-
+	
+	public void showEngineParams(){
+		System.out.println( "Parametros del Engine:");
+		System.out.println( "\tPoblacion Total = " + FnInterface.POPULATION_SIZE + " individuos" + 
+							"\n\tSe seleccionan = " + FnInterface.SELECTION_SIZE + " individuos por generacion" + 
+							"\n\tLong de cromosoma = " + FnInterface.CHROMOSOME_SIZE +
+							"\n\tSeleccion por Ruleta \n\tReproduccion por Crossover y Mutacion con prob="+FnInterface.MUTATION_PROBABILITY+
+							"\n\tCorte cuando un individuo alcanza el " + FnInterface.HIGHEST_PERCENTAGE*100 + "%, o en su defecto al llegar a " + FnInterface.MAX_GENERATIONS + " generaciones");
+	}
+	
+	public void showResults(Population population){
+		//System.out.println("\nPoblacion Inicial\n" + originalPopulation);		
+		//System.out.println("Poblacion Final luego de " + engine.getCurrentGeneration() + " generaciones\n" + population);
+		Individual selectedIndividual =  new Individual(FnInterface.CHROMOSOME_SIZE);
+		double percentage = getSelectedIndividual(population, selectedIndividual);
+		System.out.println("\nResultados:");
+		System.out.println("\tIndividuo seleccionado = " + selectedIndividual + "\n\tFenotipo = " + myFunctions.decode( selectedIndividual.getChromosome() ) );
+		System.out.println("\tPorcentaje en la Poblacion = " + percentage*100 + "% , luego de " + getCurrentGeneration() + " generaciones");
+	}
 	/**
 	 * @param args
 	 */
@@ -158,23 +175,21 @@ public class Engine {
 		
 		//Inicializo la poblacion, el paramero algType define si voy a minimizar o maximizar
 		Population population = engine.populationInit(FnInterface.algType);
+		@SuppressWarnings("unused")
 		Population originalPopulation = (Population)population.clone();
 		
 		ArrayList<Individual> parents;
 		ArrayList<Individual> offspring;
 		
 		while( !engine.EndCondition(population) ){
-			parents = engine.selection(population);
-			offspring = engine.reproduction(parents);
+			parents = engine.selection(population);			
+			offspring = engine.reproduction(parents);			
 			population = (Population)engine.replacement(population, offspring);
 			engine.incrementCurrentGeneration();
-			System.out.println("\nIteracion " + engine.getCurrentGeneration());
-		}		
-		System.out.println("\nPoblacion Inicial\n" + originalPopulation);		
-		System.out.println("Poblacion Final luego de " + engine.getCurrentGeneration() + " generaciones\n" + population);
-		Individual selectedIndividual = engine.getSelectedIndividual(population);
-		System.out.println("Individuo selectionado = " + selectedIndividual + "\nFenotipo = " + myFunctions.decode( selectedIndividual.getChromosome() ) );
-				
+			System.out.println("Iteracion " + engine.getCurrentGeneration());
+		}	
+		engine.showEngineParams();
+		engine.showResults(population);				
 	}
 	
 }
