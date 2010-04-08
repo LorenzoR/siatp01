@@ -72,5 +72,26 @@ public class SyntaxTree {
 	public boolean getTerminalValue(String terminal) {
 		return terminalSet.get(terminal);
 	}
+	
+	
+	public Node mutate(double pMut, Node originalTree) {
+		
+		if ( pMut > randomGenerator.nextDouble() ) {
+			//System.out.println("------Muto- en " + originalTree);
+			return getRandomTree(2,0);
+
+		}
+		else {
+			if ( originalTree.getLeft() != null ) {
+				((FunctionNode)originalTree).left = mutate(pMut, originalTree.getLeft());
+			}
+			
+			if ( originalTree.getRight() != null ) {
+				((FunctionNode)originalTree).right = mutate(pMut, originalTree.getRight());
+			}		
+		}
+		
+		return originalTree;
+	}
 
 }

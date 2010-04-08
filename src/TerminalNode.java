@@ -7,6 +7,7 @@ public class TerminalNode extends Node {
 		public TerminalNode(String name, boolean value) {
 			this.value = value;
 			this.name = name;
+			super.marca = -1;
 		}
 
 		public void setValue(String name, boolean value) {
@@ -32,5 +33,25 @@ public class TerminalNode extends Node {
 		
 		public void printValue() {
 			System.out.println(name + ": " + value);
+		}
+
+		/*public void setValue(Node tree) {
+			//super.tree = tree;
+			//System.out.println("El nuevo valor es " + tree);
+			this.value = ((TerminalNode) tree).value();
+			this.name = ((TerminalNode) tree).getName();			
+		}*/
+
+		@Override
+		public String toString() {
+			return name + " (" + value + ")" + "(" + super.marca + ")";
+		}
+		
+		public void setAnotherValue (FunctionNode node) {
+			super.tree = node;
+		}
+
+		public int size() {
+			return 1;
 		}
 	}

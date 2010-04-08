@@ -39,11 +39,51 @@ public class TestSyntaxTree {
 		
 		SyntaxTree st = new SyntaxTree(terminalSet, functionSet);
 		
-		Node n9 = st.getRandomTree(3, 1);
+		/*TerminalNode auxNode = new TerminalNode("X", true);
+		FunctionNode auxNode2 = new FunctionNode("WHY", null, null);
 		
+		System.out.println("AuxNode es " + auxNode);
+		auxNode.setAnotherValue(auxNode2);
+		System.out.println("AuxNode ahora es " + auxNode);
+		
+		
+		System.out.print("auxNode es ");
+		auxNode.printValue();
+		
+		Node n9 = st.getRandomTree(2, 0);
+		System.out.println("***** N9 es: ******");
 		n9.printPreorder();
 		
-		System.out.println(n9.value());
+		//Node n10 = st.getRandomTree(2,0);
+		//System.out.println("***** N10 es: ******");
+		//n10.printPreorder();
+		//System.out.println("***** N10 left es: ******");
+		//n10.getLeft().printPreorder();
+		
+		//Node n11;
+		st.doMutate(n9, 0.2);
+		System.out.println("****** N9 es: ******");
+		n9.printPreorder();
+		
+		//n9.setValue(auxNode);
+	//	System.out.println("******N9 mutado es: *******");
+		//n9.printPreorder();
+		
+		//System.out.println(n9.value());*/
+		
+		Node n11 = st.getRandomTree(2, 0);
+		//Node n12 = st.doMutate2(0.5, n11);
+		//System.out.println("Cantidad nodos: " + n11.size());
+		
+		
+		System.out.println("*****n11 es *******");
+		n11.printPreorder();
+		
+		Node n12;
+		n12 = st.mutate(0.5, n11);
+		System.out.println("*****n12 ahora es *******");
+		n12.printPreorder();
+		
 		
 	}
 
