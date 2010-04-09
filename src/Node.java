@@ -1,4 +1,4 @@
-public abstract class Node{
+public abstract class Node implements Cloneable{
 
 	public Node tree;
 	public int marca;
@@ -36,6 +36,15 @@ public abstract class Node{
 		}
 
 	}
+	public Object clone() throws CloneNotSupportedException{
+        Node obj=null;
+        try{
+            obj=(Node)super.clone();
+        }catch(CloneNotSupportedException ex){
+            System.out.println(ex.getMessage());
+        }       
+        return obj;
+    }
 	
 }
 
