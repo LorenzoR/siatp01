@@ -64,7 +64,25 @@ public class FunctionNode extends Node implements Cloneable {
 		this.right = tree.getRight();
 		
 	}*/
-
+	public Object clone(){
+	       FunctionNode obj=null;
+	        try{
+	            obj=(FunctionNode)super.clone();
+	        }catch(CloneNotSupportedException ex){
+	            System.out.println("No se puede duplicar la superclase de Function Node");
+	        }    
+	        obj.function = new String(function);
+	        try {
+				obj.left = (Node)left.clone();
+				if( right != null )
+		        	obj.right = (Node)right.clone();
+			} catch (CloneNotSupportedException e) {
+				// TODO Auto-generated catch block
+				System.out.println("No se puede duplicar Function Node interamente");
+			}
+	        
+	        return obj;
+	    }
 	@Override
 	public String toString() {
 		return this.function + "(" + super.marca + ")";

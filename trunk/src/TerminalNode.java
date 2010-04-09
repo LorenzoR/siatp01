@@ -1,5 +1,5 @@
 
-public class TerminalNode extends Node {
+public class TerminalNode extends Node implements Cloneable {
 
 		private boolean value;
 		private String name;
@@ -42,6 +42,16 @@ public class TerminalNode extends Node {
 			this.name = ((TerminalNode) tree).getName();			
 		}*/
 
+		public Object clone(){
+	       TerminalNode obj=null;
+	        try{
+	            obj=(TerminalNode)super.clone();
+	        }catch(CloneNotSupportedException ex){
+	            System.out.println("No se puede duplicar el Terminal Node");
+	        }    
+	        obj.name = new String(name);
+	        return obj;
+	    }
 		@Override
 		public String toString() {
 			return name + " (" + value + ")" + "(" + super.marca + ")";
