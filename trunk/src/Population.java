@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 //import java.util.Collections;
 import java.util.Random;
 
@@ -53,8 +55,160 @@ public class Population implements Cloneable {
         return obj;
     }
 	
+	public ArrayList<Individual> eliteUniversalSelection(int cantElite, int cantUniversal) {
+		ArrayList<Individual> eliteSelection = new ArrayList<Individual>(0);
+		ArrayList<Individual> universalSelection = new ArrayList<Individual>(0);
+		
+		eliteSelection = eliteSelection(cantElite);
+		universalSelection = universalSelection(cantUniversal);
+		
+		eliteSelection.addAll(universalSelection);
+		
+		return eliteSelection;
+	}
+	
+	public ArrayList<Individual> eliteRouletteSelection(int cantElite, int cantRoulette) {
+		ArrayList<Individual> eliteSelection = new ArrayList<Individual>(0);
+		ArrayList<Individual> rouletteSelection = new ArrayList<Individual>(0);
+		
+		eliteSelection = eliteSelection(cantElite);
+		rouletteSelection = rouletteSelection(cantRoulette);
+		
+		eliteSelection.addAll(rouletteSelection);
+		
+		return eliteSelection;
+	}
+	
+	public ArrayList<Individual> eliteSelection(int cant) {
+		ArrayList<Individual> resp = new ArrayList<Individual>(0);
+		ArrayList<Double> aptitud = new ArrayList<Double>(this.size);
+		
+		// Computo de aptitudes y aptitud total
+		for ( int i = 0; i < this.size; i++ ) {
+			aptitud.add(i, this.fitness(population.get(i)) );
+		}
+		
+		Collections.sort(aptitud, Collections.reverseOrder());
+		
+		List<Double> best = aptitud.subList(0, cant);
+		
+		//System.out.println("Population es " + population);
+		//System.out.println("Aptitudes es " + aptitud);
+		//System.out.println("Best es " + best);
+		
+		for ( int i = 0, j = 0; i < this.size() && j < cant; i++ ) {
+			if ( best.contains(this.fitness(population.get(i)))) {
+				//System.out.println("Best contiene a " + this.fitness(population.get(i)));
+				//System.out.println("Elijo " + i);
+				resp.add( j++, (Individual)population.get(i).clone() );
+			}
+		}
+		
+		//System.out.println("Elite Selection (elijo " + cant + " ) " + best);
+		//System.out.println("Finalmente, me quedo con " + resp);
+		
+		return resp;
+	}
+	
+	public ArrayList<Individual> rouletteSelection(int cant) {
+		ArrayList<Individual> resp = new ArrayList<Individual>(0);
+		ArrayList<Double> r = new ArrayList<Double>(cant);
+		ArrayList<Double> aptitud = new ArrayList<Double>(this.size);
+		ArrayList<Double> relativeAptitud = new ArrayList<Double>(this.size);
+		ArrayList<Double> accumulatedAptitud = new ArrayList<Double>(this.size);
+		double totalAptitud = 0;
+
+		if ( cant >= this.size || cant < 0) {
+			return this.population;
+		}
+		
+		// Computo de Ri
+		for (int i = 1; i <= cant; i++) {
+			r.add(i-1, randomGenerator.nextDouble());
+		}
+		
+		// Computo de aptitudes y aptitud total
+		for ( int i = 0; i < this.size; i++ ) {
+			aptitud.add(i, this.fitness(population.get(i)) );
+			totalAptitud += aptitud.get(i);
+		}
+		
+		// Computo de aptitudes relativas
+		for ( int i = 0; i < this.size; i++ ) {
+			relativeAptitud.add(i, aptitud.get(i) / totalAptitud);
+		}
+		
+		// Computo de aptitudes acumuladas
+		accumulatedAptitud.add(0, relativeAptitud.get(0));
+		for ( int i = 1; i < this.size; i++ ) {
+			accumulatedAptitud.add(i, accumulatedAptitud.get(i - 1) + relativeAptitud.get(i));
+		}
+		
+		
+		for( int i=0 ; i < r.size() ; i++ ){
+			for( int j=0; j< accumulatedAptitud.size() ; j++ )
+				if( r.get(i) < accumulatedAptitud.get(j) ){					
+					resp.add( i, (Individual)population.get(j).clone() );
+					break;
+				}					
+		}
+		return resp;
+	}
+	
+	public ArrayList<Individual> universalSelection(int cant) {
+
+		ArrayList<Individual> selection;
+		ArrayList<Double> r;
+		Double randomNumber = randomGenerator.nextDouble();
+		ArrayList<Double> aptitud = new ArrayList<Double>(this.size);
+		ArrayList<Double> relativeAptitud = new ArrayList<Double>(this.size);
+		ArrayList<Double> accumulatedAptitud = new ArrayList<Double>(this.size);
+		double totalAptitud = 0;
+	
+		if ( cant >= this.size || cant < 0) {
+			return this.population;
+		}
+		
+		selection = new ArrayList<Individual>(cant);
+		r = new ArrayList<Double>(cant);
+		
+		// Computo de Ri
+		for (int i = 1; i <= cant; i++) {
+			r.add(i-1, ( randomNumber + i - 1 ) / cant);
+		}
+		
+		// Computo de aptitudes y aptitud total
+		for ( int i = 0; i < this.size; i++ ) {
+			aptitud.add(i, this.fitness(population.get(i)) );
+			totalAptitud += aptitud.get(i);
+		}
+		
+		// Computo de aptitudes relativas
+		for ( int i = 0; i < this.size; i++ ) {
+			relativeAptitud.add(i, aptitud.get(i) / totalAptitud);
+		}
+		
+		// Computo de aptitudes acumuladas
+		accumulatedAptitud.add(0, relativeAptitud.get(0));
+		for ( int i = 1; i < this.size; i++ ) {
+			accumulatedAptitud.add(i, accumulatedAptitud.get(i - 1) + relativeAptitud.get(i));
+		}
+		
+		
+		for( int i=0 ; i < r.size() ; i++ ){
+			for( int j=0; j< accumulatedAptitud.size() ; j++ )
+				if( r.get(i) < accumulatedAptitud.get(j) ){					
+					selection.add( i, (Individual)population.get(j).clone() );
+					break;
+				}					
+		}
+		return selection;
+	}
+	
 	public ArrayList<Individual> selection(int cant) {
-		//ArrayList<Individual> resp = new ArrayList<Individual>(cant);
+		
+		return universalSelection(cant);
+		/*//ArrayList<Individual> resp = new ArrayList<Individual>(cant);
 		ArrayList<Individual> resp = new ArrayList<Individual>(0);
 		ArrayList<Double> r = new ArrayList<Double>(cant);
 		//Random randomGenerator = new Random();
@@ -63,7 +217,7 @@ public class Population implements Cloneable {
 		ArrayList<Double> relativeAptitud = new ArrayList<Double>(this.size);
 		ArrayList<Double> accumulatedAptitud = new ArrayList<Double>(this.size);
 		double totalAptitud = 0;
-		/*
+		
 		//Detecto si me piden seleccionar una cantidad negativa
 		if( cant < 0 )
 			cant = 0;		
@@ -71,7 +225,7 @@ public class Population implements Cloneable {
 		//devuelvo directamente la poblacion
 		if( cant >= FnInterface.POPULATION_SIZE )
 			return this.population;
-		*/
+		
 		// Computo de Ri
 		for (int i = 1; i <= cant; i++) {
 			r.add(i-1, ( randomNumber + i - 1 ) / cant);
@@ -103,7 +257,7 @@ public class Population implements Cloneable {
 					break;
 				}					
 		}
-		return resp;
+		return resp;*/
 	}
 
 	public ArrayList<Individual> replacement ( int cant ) {
