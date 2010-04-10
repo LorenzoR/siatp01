@@ -13,11 +13,10 @@ public class NodeReference {
 	public int getChildDirection(){
 		return childDirection;
 	}
-	public String ToString(){
+	public String toString(){
 		StringBuffer resp = new StringBuffer();
-		resp.append("Child dir = " + childDirection + "Stored Node =\n" );
-		//node.printPreorder();
-			
+		resp.append("Child dir = " + childDirection + "\tStored Node = " + node );
+					
 		return resp.toString();		
 	}
 }

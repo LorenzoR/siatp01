@@ -96,39 +96,60 @@ public class SyntaxTree {
 		return originalTree;
 	}
 	
-	public ArrayList<Node> crossOver(double pMut, Node parentT1, Node parentT2){
+	public ArrayList<Node> crossOver(Node parentT1, Node parentT2){
 		ArrayList<Node>offspring = new ArrayList<Node>(2);
 		ArrayList<NodeReference> nodesReferenceArrayPT1 = new ArrayList<NodeReference>();
 		ArrayList<NodeReference> nodesReferenceArrayPT2 = new ArrayList<NodeReference>();
+		
 		//Si uno de los padres es un TerminalNode no lo puedo cruzar porque
-		//no tengo la referencia a la referencia del objeto			
+		//no tengo la referencia, a la referencia del objeto			
 		if (parentT1 instanceof TerminalNode || parentT2 instanceof TerminalNode) {
-			offspring.add(parentT2);
-			offspring.add(parentT1);			
+			try {
+				offspring.add((Node) parentT2.clone());
+				offspring.add((Node) parentT1.clone());	
+			} catch (CloneNotSupportedException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+			}					
 		}else{
 			//El primer elemento corresponde a la raiz, que no se puede cambiar
 			nodesReferenceArrayPT1.add(null);
 			nodesReferenceArrayPT2.add(null);
 			
-			//Tengo que clonar a los padres, ya que los hijos seran individuos
-			//diferentes
+			//Los hijos deben ser individuos diferentes
 			Node parentClone1=null;
 			Node parentClone2=null;
 			try {
 				parentClone1 = (Node) parentT1.clone();
 				parentClone2 = (Node) parentT2.clone();
+				offspring.add(parentClone1);
+				offspring.add(parentClone2);
 			} catch (CloneNotSupportedException e) {
 				// TODO Auto-generated catch block
 				System.out.println(e.getMessage());
-			}
-			
+			}			
 			
 			//Obtengo las referencias a todos los nodos (excepto el raiz). 
 			//Estas referencias estan indexadas por orden del ArrayList
 			getNodesReference( parentClone1, nodesReferenceArrayPT1);
 			getNodesReference( parentClone2, nodesReferenceArrayPT2);
 			
-			//Elijo al azar un nodo en base a los indices posibles
+			//DEBUG
+			System.out.println("Reference array 1 SIZE = " + nodesReferenceArrayPT1.size());			
+			for(int i=1 ; i<nodesReferenceArrayPT1.size();i++){
+				System.out.println("index="+i+", Node = "+nodesReferenceArrayPT1.get(i).node + ", Dir = " + nodesReferenceArrayPT1.get(i).childDirection);
+			}			
+			System.out.println("END");						
+			System.out.println("Reference array 2 SIZE = " + nodesReferenceArrayPT2.size());
+			if( nodesReferenceArrayPT2.size() > 0 ){
+				for(int i=1 ; i<nodesReferenceArrayPT2.size();i++){
+					System.out.println("index="+i+", Node = "+nodesReferenceArrayPT2.get(i).node + ", Dir = " + nodesReferenceArrayPT2.get(i).childDirection);
+				}
+			}
+			System.out.println("END");
+			//END DEBUG
+			
+			//Elijo al azar un nodo en base a la cantidad de nodos del arbol
 			int randomNodeNumberParentT1 = 0;
 			while( randomNodeNumberParentT1 == 0){
 				randomNodeNumberParentT1 = randomGenerator.nextInt(nodesReferenceArrayPT1.size());
@@ -137,39 +158,33 @@ public class SyntaxTree {
 			while( randomNodeNumberParentT2 == 0){
 				randomNodeNumberParentT2 = randomGenerator.nextInt(nodesReferenceArrayPT2.size());
 			}
-			
+			//DEBUG
 			System.out.println("===> random number for p1 = " + randomNodeNumberParentT1);
 			System.out.println("===> random number for p2 = " + randomNodeNumberParentT2);
+			//END DEBUG
 			
-			System.out.println("Size del arr ref 1 = " + nodesReferenceArrayPT1.size());
-			if( nodesReferenceArrayPT1.size() > 0 ){
-				for(int i=0 ; i<nodesReferenceArrayPT1.size();i++)
-					System.out.println("index="+i+", Node = "+nodesReferenceArrayPT1.get(i).node);
-			}
-			
-			System.out.println("=============> Selected node P1 =" + nodesReferenceArrayPT1.get(randomNodeNumberParentT1).node);
-			System.out.println("=============> Selected node P2 =" + nodesReferenceArrayPT2.get(randomNodeNumberParentT2).node);
 			//Intercambio los subarboles segun los nodos elegidos
 			int dir1 = nodesReferenceArrayPT1.get(randomNodeNumberParentT1).getChildDirection();
 			Node n1 = nodesReferenceArrayPT1.get(randomNodeNumberParentT1).getNode();
-			int dir2 = nodesReferenceArrayPT1.get(randomNodeNumberParentT2).getChildDirection();
-			Node n2 = nodesReferenceArrayPT1.get(randomNodeNumberParentT2).getNode();
+			int dir2 = nodesReferenceArrayPT2.get(randomNodeNumberParentT2).getChildDirection();
+			Node n2 = nodesReferenceArrayPT2.get(randomNodeNumberParentT2).getNode();
+			System.out.println("*** SELECTED NODES IN REF ARRAY: <1>=("+n1+", "+dir1+")\t<2>=("+n2+", "+dir2+")");//DEBUG
 			
 			Node auxNode1 = (dir1==0)?n1.getLeft():n1.getRight();
 			Node auxNode2 = (dir2==0)?n2.getLeft():n2.getRight();
+			System.out.println("NODES TO SWAP:"+"\t1="+auxNode1+", 2="+auxNode2);//DEBUG
 			
-			FunctionNode fn1 = (FunctionNode)n1;
-			FunctionNode fn2 = (FunctionNode)n2;
 			if( dir1 == 0)
-				fn1.setLeft(auxNode2);
+				((FunctionNode)n1).setLeft(auxNode2);
 			else
-				fn1.setRight(auxNode2);
+				((FunctionNode)n1).setRight(auxNode2);
 			
 			if( dir2 == 0 )
-				fn2.setLeft(auxNode1);
+				((FunctionNode)n2).setLeft(auxNode1);
 			else
-				fn2.setRight(auxNode1);
-		} 		
+				((FunctionNode)n2).setRight(auxNode1);
+				
+		}		
 		return offspring;
 	}
 	
@@ -179,7 +194,7 @@ public class SyntaxTree {
 		}
 		else{
 			if( node.getLeft() != null ){
-				refArray.add(new NodeReference(node,0));
+				refArray.add(new NodeReference(node, 0));				
 				getNodesReference(node.getLeft(), refArray);
 			}
 			if( node.getRight() != null ){
