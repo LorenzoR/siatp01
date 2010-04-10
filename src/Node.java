@@ -11,6 +11,10 @@ public abstract class Node implements Cloneable{
 	
 	public abstract int size();
 	
+	public abstract boolean isTerminalNode();
+	
+	public abstract boolean isFunctionNode();
+	
 	public void setValue(Node tree) {
 		this.tree = tree;
 	}

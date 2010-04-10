@@ -11,6 +11,14 @@ public class FunctionNode extends Node implements Cloneable {
 		super.marca = -1;
 	}
 
+	public boolean isFunctionNode() {
+		return true;
+	}
+	
+	public boolean isTerminalNode() {
+		return false;
+	}
+	
 	public void setLeft(Node left) {
 		this.left = left;
 	}
