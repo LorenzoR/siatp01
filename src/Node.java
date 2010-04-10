@@ -29,17 +29,23 @@ public abstract class Node implements Cloneable{
 	
 	public void printPreorder() {
 		//this.printValue();
+		printPreorderAux(0);
+	}
+		
+	private void printPreorderAux(int depth) {
+		for( int i=0; i < depth; i++ )
+			System.out.print("    ");
 		System.out.println(this);
 		
 		if (this.getLeft() != null) {
-			this.getLeft().printPreorder();
+			this.getLeft().printPreorderAux(depth+1);
 		}
 
 		if (this.getRight() != null) {
-			this.getRight().printPreorder();
+			this.getRight().printPreorderAux(depth+1);
 		}
-
 	}
+	
 	public Object clone() throws CloneNotSupportedException{
         Node obj=null;
         try{
