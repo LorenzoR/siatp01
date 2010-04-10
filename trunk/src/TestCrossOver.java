@@ -30,38 +30,23 @@ public class TestCrossOver {
 		
 		Node parent1 = st.getRandomTree(2, 0);				
 		System.out.println("*****parent1 es *******");
-		parent1.printPreorder();
-		Node cloneParent1 = null;
-		try {
-			cloneParent1 = (Node)parent1.clone();
-		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Cloning Parent1 failed");
-		}
+		parent1.printPreorder();		
 		
 		Node parent2 = st.getRandomTree(2, 0);	
 		System.out.println("*****parent2 es *******");
 		parent2.printPreorder();
-		Node cloneParent2 = null;
-		try {
-			cloneParent2 = (Node)parent2.clone();
-		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Cloning Parent1 failed");
-		}
 		
-		System.out.println("*****Clone parent1 es *******");
-		cloneParent1.printPreorder();
-		
-		System.out.println("*****Clone parent2 es *******");
-		cloneParent2.printPreorder();
-		
-		ArrayList<Node> offspring = st.crossOver(0.5, cloneParent1, cloneParent2);
+		ArrayList<Node> offspring = st.crossOver(parent1, parent2);		
 		for( int i=0 ; i<offspring.size(); i++){
 			System.out.println("*****Offspring "+i+" es *******");
 			Node child = offspring.get(i);
 			child.printPreorder();
 		}
+		System.out.println("*****AFTER CROSSOVER parent1 es *******");
+		parent1.printPreorder();
+		
+		System.out.println("*****AFTER CROSSOVER parent2 es *******");
+		parent2.printPreorder();
 		
 	}
 
