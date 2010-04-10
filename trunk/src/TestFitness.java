@@ -9,18 +9,28 @@ public class TestFitness {
 	 */
 	public static void main(String[] args) {
 		TestFitness tf = new TestFitness();
+		
 		// Aqui se cargan todas las caracteristicas del sistema para
 		// construir arboles que representan individuos.
 		SyntaxTree st = tf.SetearFabricaDeArboles();
 		
+		Fitness f = tf.SetearFuncionDeFitness();
+		
 		//Random r = new Random();
 		//int maxD = r.nextInt(6) + 1;
-		int maxD = 2;
+		int maxD = 3;
 		int method = 0;
+		Node t = st.getRandomTree(maxD, method);
+
+		int colSalida = 3;			// Salida bit 0
+		f.fitnessValue(t, colSalida);
+		
+		/*
 		Node t = st.getRandomTree(maxD, method);
 		int bitsPorEntrada = 1;		// 1 bit para A y 1 bit para B
 		int colSalida = 0;			// Salida bit 0
 		st.fitness(t, bitsPorEntrada, colSalida);
+		*/
 		
 		/*
 		TestFitness tf = new TestFitness();
@@ -57,7 +67,12 @@ public class TestFitness {
 		//terminalSet.put("B3", r.nextBoolean());
 
 		SyntaxTree st = new SyntaxTree(terminalSet, functionSet);
-		// Seteo las mascaras de las entradas (posiciones de los bits de entrada)
+		
+		return st;
+	}
+	
+	public Fitness SetearFuncionDeFitness() {
+		// Seteo las mascaras de los Terminales (posiciones de los bits de entrada)
 		Map<String, Integer> terminalMask = new HashMap<String, Integer>();
 		/*
 		terminalMask.put("A3", 128);	// bit7: 2^7
@@ -67,14 +82,17 @@ public class TestFitness {
 		terminalMask.put("B3", 8);
 		terminalMask.put("B2", 4);
 		terminalMask.put("B1", 2);
-		*/
+		 */
 		terminalMask.put("A0", 2);
 		terminalMask.put("B0", 1);		// bit0: 2^0
-		st.setTerminalMask(terminalMask);
-		
-		return st;
-	}
 	
+		int cantBitsEntrada = 2;	// 1 bit para A y 1 bit para B
+		int cantBitsSalida = 7;
+		int cantEntradas = 2;
+		Fitness f = new Fitness(cantBitsEntrada, cantBitsSalida, cantEntradas, terminalMask);
+
+		return f;
+	}
 	/*
 	public Node construirArbol(String fun, boolean a0, boolean b0) {
 		Node n1 = new TerminalNode("A0", a0);
@@ -84,6 +102,7 @@ public class TestFitness {
 	}
 	*/
 	
+	/*
 	public Node construirArbol(String fun, boolean a0, boolean b0) {
 		if( fun.equalsIgnoreCase("XOR") ) {
 			Node n1 = new TerminalNode("A0", a0);
@@ -126,7 +145,9 @@ public class TestFitness {
 		System.out.println("Aptitud arbol: " + valorAptitud);
 		return valorAptitud;
 	}
+	*/
 	
+	/*
 	// usa tabla cableada
 	public int test2(int maxD, int method) { 
 		int valorAptitud = 0;
@@ -173,5 +194,6 @@ public class TestFitness {
 		System.out.println("De tabla: B0 = " + Util.toBoolean(rpta));
 		return Util.toBoolean(rpta);
 	}
-
+	*/
+	
 }

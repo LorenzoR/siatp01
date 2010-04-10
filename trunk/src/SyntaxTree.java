@@ -13,7 +13,7 @@ public class SyntaxTree {
 	private ArrayList<Integer> arity;
 	private ArrayList<Boolean> terminalValues;
 	private Random randomGenerator = new Random();
-	private Map<String, Integer> terminalMask;
+
 	
 	
 	public SyntaxTree(Map<String, Boolean> terminalSet, Map<String, Integer> functionSet) {
@@ -202,76 +202,6 @@ public class SyntaxTree {
 				getNodesReference(node.getRight(), refArray);
 			}		 
 		}
-	}
-
-	
-	// Setea las mascaras de las entradas (posiciones de los bits de entrada).
-	public void setTerminalMask(Map<String, Integer> terminalMask) {
-		this.terminalMask = terminalMask;
-	}
-	
-	// Setea valores de los terminales del arbol usando num. Se usa en la fun de fitness.
-	// Necesita que se haya usado previamente setTerminalMask.
-	public void setAllTerminalValues(Node t, int num) {
-		if( t == null)
-			return;
-		if ( t.isTerminalNode() ) {
-			TerminalNode aux = (TerminalNode) t;
-			String name = aux.getName();
-			int mask = terminalMask.get(name);
-			// Uso la mascara asociada al TerminalNode para elegir
-			// el nuevo valor a setear en dicho nodo
-			boolean value = Util.toBoolean(num & mask);
-			aux.setValue(name, value);
-		}
-		else {
-			setAllTerminalValues( t.getLeft(), num);
-			setAllTerminalValues( t.getRight(), num);
-		}
-	}
-
-	// Calcula los valores de salida del circuito buscado, para cada entrada de la tabla.
-	// entradaTabla = A3 A2 A1 A0 B3 B2 B1 B0 (de 0 a 255)
-	// 4 bits por entrada (A y B)
-	// colsalida elige una de las 7 salidas: 0..6
-	public boolean valorTabla(int entradaTabla, int bitsPorEntrada, int colSalida) {
-		int a, b, rpta;
-		int divisor = 1 << bitsPorEntrada;
-		
-		a = entradaTabla / divisor;
-		b = entradaTabla % divisor;
-		
-		// Muevo el bit que me interesa a la posicion colSalida
-		rpta = (a*10 + b) >> colSalida;
-		// Obtengo dicho bit en rpta
-		rpta %= 2;
-		System.out.println("De tabla: " + Util.toBoolean(rpta));
-		return Util.toBoolean(rpta);
-	}
-	
-	// Funcion de fitness.
-	public int fitness(Node t, int bitsPorEntrada, int colSalida) { 
-		int valorAptitud = 0;
-		System.out.println("Arbol original (random):");
-		t.printPreorder();
-		
-		int cantEntradasTabla = 1 << (bitsPorEntrada*2);
-		for( int i=0; i < cantEntradasTabla; i++ ) {
-			// Seteo valores de los terminales del arbol construido para cada i
-			setAllTerminalValues(t, i);
-			System.out.println("Arbol con valores seteados:");
-			t.printPreorder();
-			boolean evaluacionArbol = t.value();
-			System.out.println("Evaluacion arbol con entrada " + i + ": " + evaluacionArbol);
-			if( evaluacionArbol == valorTabla(i, bitsPorEntrada, colSalida) ) {
-				valorAptitud++;
-				System.out.println("******Coincidencia******");
-			}
-			else
-				System.out.println("************************");
-		}
-		System.out.println("Aptitud arbol: " + valorAptitud);
-		return valorAptitud;
 	}
 	
 }
