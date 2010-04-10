@@ -10,6 +10,14 @@ public class TerminalNode extends Node implements Cloneable {
 			super.marca = -1;
 		}
 
+		public boolean isTerminalNode() {
+			return true;
+		}
+		
+		public boolean isFunctionNode() {
+			return false;
+		}
+		
 		public void setValue(String name, boolean value) {
 			this.value = value;
 			this.name = name;
