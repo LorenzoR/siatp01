@@ -28,7 +28,7 @@ public class Population implements Cloneable {
 		this.f = f;
 		this.outputBit = outputBit;
 		for (int i = 0; i < this.size; i++) {
-			this.population.add(i, new Individual( this.st, maxHeight, f, outputBit));
+			this.population.add(i, new Individual( this.st, maxHeight, this.f, this.outputBit));
 			
 		}
 
@@ -365,7 +365,7 @@ public class Population implements Cloneable {
 		StringBuffer resp = new StringBuffer();
 		
 		for (int i = 0; i < this.size; i++) {
-			resp.append("Individuo " + i + ": " + population.get(i).toString() + "\n");
+			resp.append("Individuo " + i + ", Fitness = " + population.get(i).fitnessValue()+  "\n" + population.get(i).toString() + "\n");
 		}
 		return resp.toString();
 	}		

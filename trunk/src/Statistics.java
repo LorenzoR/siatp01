@@ -27,14 +27,32 @@ public class Statistics {
 		double percentage; 
 		List list = Collections.synchronizedList(subjects); 
         Collections.sort(list);
-        System.out.println("Ordered List = \n" + list);
+        //System.out.println("Ordered List = \n" + list);
         Subject sub = (Subject)list.get(list.size()-1);
         percentage =  ((double)sub.getFrequency())/(double)total ;
-        System.out.println(percentage);
+        //System.out.println(percentage);
         
         resultSubject.setFrequency(sub.getFrequency());
         resultSubject.setIndividual(sub.getIndividual());			
 		
         return percentage;
+	}
+	
+	public double getPopulationAvgFitness(){
+		double sum = 0;
+		for( int i=0 ; i< subjects.size() ; i++ ){
+			sum += subjects.get(i).getIndividual().fitnessValue();
+		}
+		return sum/subjects.size();
+	}
+	
+	public int getBestIndividualFitness(){
+		int maxFitness = 0;	
+		for( int i=0 ; i< subjects.size() ; i++ ){
+			int currentFitness = subjects.get(i).getIndividual().fitnessValue(); 
+			if( currentFitness > maxFitness )
+				maxFitness = currentFitness;
+		}
+		return maxFitness;
 	}
 }

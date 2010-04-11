@@ -92,4 +92,5 @@ public class Individual implements Cloneable{
 	public int fitnessValue (){
 		return fitnessValue;
 	}
+	
 }
