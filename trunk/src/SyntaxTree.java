@@ -63,11 +63,11 @@ public class SyntaxTree {
 		}
 	}
 
-	public String chooseRandomElement(ArrayList<String> elements) {
+	private String chooseRandomElement(ArrayList<String> elements) {
 		return elements.get(randomGenerator.nextInt(elements.size()));
 	}
 
-	public int getArity(String function) {
+	private int getArity(String function) {
 		return functionSet.get(function);
 	}
 	
@@ -76,20 +76,20 @@ public class SyntaxTree {
 	}
 	
 	
-	public Node mutate(double pMut, Node originalTree) {
+	public Node mutate(double pMut, int maxH, Node originalTree) {
 		
 		if ( pMut > randomGenerator.nextDouble() ) {
 			//System.out.println("------Muto- en " + originalTree);
-			return getRandomTree(2,0);
+			return getRandomTree(randomGenerator.nextInt(maxH),randomGenerator.nextInt(2));
 
 		}
 		else {
 			if ( originalTree.getLeft() != null ) {
-				((FunctionNode)originalTree).left = mutate(pMut, originalTree.getLeft());
+				((FunctionNode)originalTree).left = mutate(pMut, maxH, originalTree.getLeft());
 			}
 			
 			if ( originalTree.getRight() != null ) {
-				((FunctionNode)originalTree).right = mutate(pMut, originalTree.getRight());
+				((FunctionNode)originalTree).right = mutate(pMut, maxH, originalTree.getRight());
 			}		
 		}
 		
