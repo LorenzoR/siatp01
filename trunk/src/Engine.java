@@ -52,8 +52,8 @@ public class Engine {
 	}
 	
 	public ArrayList<Population> populationInit(){
-		ArrayList<Population>populations = new ArrayList<Population>(FnInterface.BITS_PER_OUTPUT);
-		for( int i=0 ; i< FnInterface.BITS_PER_OUTPUT; i++ )
+		ArrayList<Population>populations = new ArrayList<Population>(FnInterface.OUTPUT_BITS);
+		for( int i=0 ; i< FnInterface.OUTPUT_BITS; i++ )
 			populations.add(new Population(this.populationSize,st, f, maxHeight, i ) );
 		return populations;
 	}
@@ -188,7 +188,7 @@ public class Engine {
 		//Inicializo la poblacion, el paramero algType define si voy a minimizar o maximizar
 		ArrayList<Population> populations = engine.populationInit();		
 		
-		for( int i=0 ; i<FnInterface.BITS_PER_OUTPUT ; i++ ){
+		for( int i=0 ; i<FnInterface.OUTPUT_BITS ; i++ ){
 			Population population = populations.get(i);
 			
 			//System.out.println("====> POPULATION " + i);

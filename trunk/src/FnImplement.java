@@ -1,11 +1,10 @@
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
-
 
 public class FnImplement implements FnInterface {
 
+	/*
 	public double decode( ArrayList<Boolean> chromosome ){		
  		double decode = 0;
         int pow = 0;
@@ -19,7 +18,7 @@ public class FnImplement implements FnInterface {
         decode = decode * ( 1 / (Math.pow(2,chromosome.size()) - 1) );        
         return decode;		 
 	}
-	/*
+	
 	public ArrayList<Boolean> encode( double fenotype, int chromosomeSize ){	
 		//FALTA COMPLETAR: Esta codificacion sigue el ejemplo de Lore		
 		Random number = new Random();
@@ -30,7 +29,6 @@ public class FnImplement implements FnInterface {
 		return chromosome;		
 	}
 	*/
-	
 	
 	public SyntaxTree setSyntaxTree(String[] terminals, String[] functions, int[] arities) {
 		Map<String, Integer> functionSet = new HashMap<String, Integer>();
@@ -43,28 +41,27 @@ public class FnImplement implements FnInterface {
 			functionSet.put(functions[i], arities[i]);
 		}
 		
-
 		Map<String, Boolean> terminalSet = new HashMap<String, Boolean>();
-		Random r = new Random();
 		
 		for( int i=0 ; i< terminals.length ; i++ ){
-			terminalSet.put(terminals[i], r.nextBoolean());
+			terminalSet.put(terminals[i], false);
 			
 		}
 		/*
 		terminalSet.put("A0", r.nextBoolean());
 		terminalSet.put("A1", r.nextBoolean());
-		//terminalSet.put("A2", r.nextBoolean());
-		//terminalSet.put("A3", r.nextBoolean());
+		terminalSet.put("A2", r.nextBoolean());
+		terminalSet.put("A3", r.nextBoolean());
 		terminalSet.put("B0", r.nextBoolean());
 		terminalSet.put("B1", r.nextBoolean());
-		//terminalSet.put("B2", r.nextBoolean());
-		//terminalSet.put("B3", r.nextBoolean());
+		terminalSet.put("B2", r.nextBoolean());
+		terminalSet.put("B3", r.nextBoolean());
 		*/
 		SyntaxTree st = new SyntaxTree(terminalSet, functionSet);
-		
+
 		return st;
 	}
+	
 	public Fitness setFitnessFunction(String[] terminals) {
 		// Seteo las mascaras de los Terminales (posiciones de los bits de entrada)
 		Map<String, Integer> terminalMask = new HashMap<String, Integer>();
@@ -76,11 +73,6 @@ public class FnImplement implements FnInterface {
 		terminalMask.put("B3", 8);
 		terminalMask.put("B2", 4);
 		terminalMask.put("B1", 2);
-		 */
-		/*
-		terminalMask.put("A1", 8);
-		terminalMask.put("A0", 4);
-		terminalMask.put("B1", 2);
 		terminalMask.put("B0", 1);		// bit0: 2^0
 		*/
 		int pow = 1;
@@ -88,16 +80,12 @@ public class FnImplement implements FnInterface {
 			terminalMask.put(terminals[i], pow);
 			pow <<= 1;
 		}
-	/*
-		int cantBitsEntrada = 2;	// 1 bit para A y 1 bit para B
-		int cantBitsSalida = 7;
-		int cantEntradas = 2;
-	*/
-		int cantBitsEntrada = BITS_PER_INPUT;	
-		int cantBitsSalida = BITS_PER_OUTPUT;
+
+		int cantBitsEntrada = INPUT_BITS;	
+		int cantBitsSalida = OUTPUT_BITS;
 		int cantEntradas = CANT_INPUTS;
 		
-		
+
 		Fitness f = new Fitness(cantBitsEntrada, cantBitsSalida, cantEntradas, terminalMask);
 
 		return f;
