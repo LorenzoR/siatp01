@@ -41,9 +41,11 @@ public class SyntaxTree {
 		this.functionSet = functionSet;
 	}
 
+	// Metodos usados para generar als arboles: 0 = full, 1 = grow
 	public Node getRandomTree(int maxD, int method) {
+		double terminalProb = (double)terminalSet.size() / (terminalSet.size() + functionSet.size());
 
-		if (maxD == 0 || ( method == 1 && randomGenerator.nextFloat() < (terminalSet.size() / (terminalSet.size() + functionSet.size()))) ) {
+		if ( maxD == 0 || ( method == 1 && randomGenerator.nextFloat() < terminalProb ) ) {
 			String terminalString = chooseRandomElement(auxTerminalSet);
 			TerminalNode nodo = new TerminalNode(terminalString, getTerminalValue(terminalString));
 			return nodo;
@@ -57,10 +59,8 @@ public class SyntaxTree {
 			} else if (arity == 2) {
 				function = new FunctionNode(functionString, getRandomTree(maxD - 1, method), getRandomTree(maxD - 1, method));
 			}
-
 			return function;
 		}
-
 	}
 
 	public String chooseRandomElement(ArrayList<String> elements) {
