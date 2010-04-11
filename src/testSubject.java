@@ -14,11 +14,16 @@ public class testSubject {
 		int frequency = 10;
 		boolean eq;
 		
-		FnImplement fn = new FnImplement();
+		
 		int maxHeight = 2;		
 		
-		Individual ind1 = new Individual(fn.setearFabricaDeArboles(),maxHeight);
-		Individual ind2 = new Individual(fn.setearFabricaDeArboles(),maxHeight);
+		FnImplement myFunctions = new FnImplement();
+		SyntaxTree st = myFunctions.setSyntaxTree(FnInterface.terminals, FnInterface.functions, FnInterface.arities);
+		Fitness f = myFunctions.setFitnessFunction(FnInterface.terminals);
+		
+		
+		Individual ind1 = new Individual(st,maxHeight,f, 0);
+		Individual ind2 = new Individual(st,maxHeight, f, 0);
 		
 		Subject s1 = new Subject(ind1, frequency);
 		

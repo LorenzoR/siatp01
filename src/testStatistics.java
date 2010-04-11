@@ -24,6 +24,8 @@ public class testStatistics {
 		
 		percentage = stats.getMostFrequentSubject(sub);
 		System.out.println("Elegido = " +  sub.getIndividual() + "\t% = " + percentage);
+		System.out.println("Average Fitness = " +  stats.getPopulationAvgFitness());
+		System.out.println("Best individual Fitness = " +  stats.getBestIndividualFitness());
 	}
 
 }

@@ -13,8 +13,9 @@ public interface FnInterface {
 	public int POPULATION_SIZE = 10;//600;
 	public double MUTATION_PROBABILITY = 0.001;	
 	public int SELECTION_SIZE = 5;//300;
-	public int MAX_GENERATIONS = 10;//8;
-	public double HIGHEST_PERCENTAGE = 0.9;
+
+	public int MAX_GENERATIONS = 20;//8;
+	public double HIGHEST_PERCENTAGE = 1;
 		
 	/* Altura maxima de los arboles que se generan para la poblacion o 
 	 * para la mutacion

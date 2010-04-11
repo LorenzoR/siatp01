@@ -204,6 +204,8 @@ public class Engine {
 				offspring = engine.reproduction(parents, i);			
 				population = (Population)engine.replacement(population, offspring);
 				engine.incrementCurrentGeneration();
+				System.out.println("Aptitud Promedio = " + stats.getPopulationAvgFitness());
+				System.out.println("Aptitud del Mejor Individuo = " + stats.getBestIndividualFitness());
 				System.out.println("Iteracion " + engine.getCurrentGeneration());
 			}	
 			engine.showEngineParams();
@@ -214,16 +216,7 @@ public class Engine {
 	}
 
 	private void showAllResults() {
-		// TODO Auto-generated method stub
-		/*
-		StringBuffer ans = new StringBuffer();
-		
-		for( int i=0 ; i<results.size() ; i++ ){
-			boolean bitValue = results.get(results.size()-i-1).value();
-			ans.append((bitValue==true)?"1":"0");
-		}
-			System.out.println("RESULT R6...R0 = > " + ans.toString());
-		*/
+		// TODO Auto-generated method stub		
 		for( int i=0 ; i<results.size() ; i++ ){
 			System.out.println("=====> BIT " + i + " ,  SIZE = "+results.get(i).size());
 			results.get(i).printPreorder();

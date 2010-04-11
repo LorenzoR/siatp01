@@ -15,8 +15,8 @@ public class Fitness {
 		this.cantBitsEntrada = cantBitsEntrada;
 		this.cantBitsSalida = cantBitsSalida;
 		this.cantEntradas = cantEntradas;
-		cantEntradasTabla = 1 << cantBitsEntrada;
-		divisor = 1 << (cantBitsEntrada/cantEntradas);
+		cantEntradasTabla = 1 << this.cantBitsEntrada;
+		divisor = 1 << (this.cantBitsEntrada/this.cantEntradas);
 		setFitnessTable();
 		// Setea la posicion de cada Terminal en una entrada de la tabla.
 		// entradaTabla = A3 A2 A1 A0 B3 B2 B1 B0 (de 0 a 255)
