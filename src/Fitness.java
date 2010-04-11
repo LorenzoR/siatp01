@@ -37,18 +37,18 @@ public class Fitness {
 			a = i / divisor;	// Entrada de A
 			b = i % divisor;	// Entrada de B
 			salidaCircuito = a*10 + b;
-			System.out.println("Valor de la tabla para entrada " + i + ": " + salidaCircuito);
-			System.out.print("Valor de la tabla para entrada " + i + " (binario al reves): ");
+			//System.out.println("Valor de la tabla para entrada " + i + ": " + salidaCircuito);
+			//System.out.print("Valor de la tabla para entrada " + i + " (binario al reves): ");
 			for( int j=0, aux=salidaCircuito; j < cantBitsSalida; j++, aux >>= 1 ) {
 				// De cada salida del circuito muevo el bit que me interesa a la
 				// posicion 0 del entero aux para luego ingresarlo a la posicion
 				// correcta del arreglo
 				tablaFitness[i*cantBitsSalida+j] = Util.toBoolean(aux % 2);
 				// Para debug
-				System.out.print(aux % 2);
+				//System.out.print(aux % 2);
 			}
 			// Para debug
-			System.out.println();
+			//System.out.println();
 		}
 	}	
 	
@@ -64,24 +64,24 @@ public class Fitness {
 	// Requiere que se haya usado previamente setTerminalMask.
 	public int fitnessValue(Node t, int colSalida) { 
 		int valorAptitud = 0;
-		System.out.println("Arbol original (random):");
-		t.printPreorder();
+		//System.out.println("Arbol original (random):");
+		//t.printPreorder();
 
 		for( int i=0; i < cantEntradasTabla; i++ ) {
 			// Seteo valores de los terminales del arbol construido para cada i
 			setAllTerminalValues(t, i);
-			System.out.println("Arbol con valores seteados:");
-			t.printPreorder();
+			//System.out.println("Arbol con valores seteados:");
+			//t.printPreorder();
 			boolean evaluacionArbol = t.value();
-			System.out.println("Evaluacion arbol con entrada " + i + ": " + evaluacionArbol);
+			//System.out.println("Evaluacion arbol con entrada " + i + ": " + evaluacionArbol);
 			if( evaluacionArbol == getTableValue(i, colSalida) ) {
 				valorAptitud++;
-				System.out.println("******Coincidencia******");
+				//System.out.println("******Coincidencia******");
 			}
-			else
-				System.out.println("************************");
+			//else
+				//System.out.println("************************");
 		}
-		System.out.println("Aptitud arbol: " + valorAptitud);
+		//System.out.println("Aptitud arbol: " + valorAptitud);
 		return valorAptitud;
 	}
 	

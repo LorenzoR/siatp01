@@ -32,14 +32,26 @@ public class FnImplement implements FnInterface {
 	*/
 	
 	
-	public SyntaxTree setearFabricaDeArboles() {
+	public SyntaxTree setSyntaxTree(String[] terminals, String[] functions, int[] arities) {
 		Map<String, Integer> functionSet = new HashMap<String, Integer>();
+		/*
 		functionSet.put("AND", 2);
 		functionSet.put("OR", 2);
 		functionSet.put("NOT", 1);
+		*/
+		for( int i=0 ; i< functions.length ; i++ ){
+			functionSet.put(functions[i], arities[i]);
+		}
+		
 
 		Map<String, Boolean> terminalSet = new HashMap<String, Boolean>();
 		Random r = new Random();
+		
+		for( int i=0 ; i< terminals.length ; i++ ){
+			terminalSet.put(terminals[i], r.nextBoolean());
+			
+		}
+		/*
 		terminalSet.put("A0", r.nextBoolean());
 		terminalSet.put("A1", r.nextBoolean());
 		//terminalSet.put("A2", r.nextBoolean());
@@ -48,12 +60,12 @@ public class FnImplement implements FnInterface {
 		terminalSet.put("B1", r.nextBoolean());
 		//terminalSet.put("B2", r.nextBoolean());
 		//terminalSet.put("B3", r.nextBoolean());
-
+		*/
 		SyntaxTree st = new SyntaxTree(terminalSet, functionSet);
 		
 		return st;
 	}
-	public Fitness setearFuncionDeFitness() {
+	public Fitness setFitnessFunction(String[] terminals) {
 		// Seteo las mascaras de los Terminales (posiciones de los bits de entrada)
 		Map<String, Integer> terminalMask = new HashMap<String, Integer>();
 		/*
@@ -65,10 +77,17 @@ public class FnImplement implements FnInterface {
 		terminalMask.put("B2", 4);
 		terminalMask.put("B1", 2);
 		 */
-		terminalMask.put("A1", 32);
+		/*
+		terminalMask.put("A1", 8);
+		terminalMask.put("A0", 4);
 		terminalMask.put("B1", 2);
-		terminalMask.put("A0", 2);
 		terminalMask.put("B0", 1);		// bit0: 2^0
+		*/
+		int pow = 1;
+		for( int i=0 ; i< terminals.length ; i++ ){
+			terminalMask.put(terminals[i], pow);
+			pow <<= 1;
+		}
 	/*
 		int cantBitsEntrada = 2;	// 1 bit para A y 1 bit para B
 		int cantBitsSalida = 7;

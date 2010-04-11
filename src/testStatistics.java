@@ -9,10 +9,15 @@ public class testStatistics {
 		double percentage;
 		Subject sub = new Subject(null, 0);
 		
-		FnImplement fn = new FnImplement();
+		
 		int maxHeight = 2;		
 		
-		Population population = new Population(populationSize,fn.setearFabricaDeArboles(),fn.setearFuncionDeFitness(),maxHeight );
+		FnImplement myFunctions = new FnImplement();
+		SyntaxTree st = myFunctions.setSyntaxTree(FnInterface.terminals, FnInterface.functions, FnInterface.arities);
+		Fitness f = myFunctions.setFitnessFunction(FnInterface.terminals);
+		Population population = new Population(populationSize, st,f,maxHeight,0);
+		
+		
 		System.out.println(population);
 		Statistics stats = new Statistics();
 		stats.setPopulation(population);

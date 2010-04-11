@@ -44,7 +44,7 @@ public class SyntaxTree {
 	// Metodos usados para generar als arboles: 0 = full, 1 = grow
 	public Node getRandomTree(int maxD, int method) {
 		double terminalProb = (double)terminalSet.size() / (terminalSet.size() + functionSet.size());
-
+		//double terminalProb = 0.5;
 		if ( maxD == 0 || ( method == 1 && randomGenerator.nextFloat() < terminalProb ) ) {
 			String terminalString = chooseRandomElement(auxTerminalSet);
 			TerminalNode nodo = new TerminalNode(terminalString, getTerminalValue(terminalString));
@@ -135,6 +135,7 @@ public class SyntaxTree {
 			getNodesReference( parentClone2, nodesReferenceArrayPT2);
 			
 			//DEBUG
+			/*
 			System.out.println("Reference array 1 SIZE = " + nodesReferenceArrayPT1.size());			
 			for(int i=1 ; i<nodesReferenceArrayPT1.size();i++){
 				System.out.println("index="+i+", Node = "+nodesReferenceArrayPT1.get(i).node + ", Dir = " + nodesReferenceArrayPT1.get(i).childDirection);
@@ -147,6 +148,7 @@ public class SyntaxTree {
 				}
 			}
 			System.out.println("END");
+			*/
 			//END DEBUG
 			
 			//Elijo al azar un nodo en base a la cantidad de nodos del arbol
@@ -159,8 +161,10 @@ public class SyntaxTree {
 				randomNodeNumberParentT2 = randomGenerator.nextInt(nodesReferenceArrayPT2.size());
 			}
 			//DEBUG
+			/*
 			System.out.println("===> random number for p1 = " + randomNodeNumberParentT1);
 			System.out.println("===> random number for p2 = " + randomNodeNumberParentT2);
+			*/
 			//END DEBUG
 			
 			//Intercambio los subarboles segun los nodos elegidos
@@ -168,11 +172,11 @@ public class SyntaxTree {
 			Node n1 = nodesReferenceArrayPT1.get(randomNodeNumberParentT1).getNode();
 			int dir2 = nodesReferenceArrayPT2.get(randomNodeNumberParentT2).getChildDirection();
 			Node n2 = nodesReferenceArrayPT2.get(randomNodeNumberParentT2).getNode();
-			System.out.println("*** SELECTED NODES IN REF ARRAY: <1>=("+n1+", "+dir1+")\t<2>=("+n2+", "+dir2+")");//DEBUG
+			//System.out.println("*** SELECTED NODES IN REF ARRAY: <1>=("+n1+", "+dir1+")\t<2>=("+n2+", "+dir2+")");//DEBUG
 			
 			Node auxNode1 = (dir1==0)?n1.getLeft():n1.getRight();
 			Node auxNode2 = (dir2==0)?n2.getLeft():n2.getRight();
-			System.out.println("NODES TO SWAP:"+"\t1="+auxNode1+", 2="+auxNode2);//DEBUG
+			//System.out.println("NODES TO SWAP:"+"\t1="+auxNode1+", 2="+auxNode2);//DEBUG
 			
 			if( dir1 == 0)
 				((FunctionNode)n1).setLeft(auxNode2);
