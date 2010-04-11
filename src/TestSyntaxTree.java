@@ -75,12 +75,12 @@ public class TestSyntaxTree {
 		//Node n12 = st.doMutate2(0.5, n11);
 		//System.out.println("Cantidad nodos: " + n11.size());
 		
-		
+		int maxH = 4;
 		System.out.println("*****n11 es *******");
 		n11.printPreorder();
 		
 		Node n12;
-		n12 = st.mutate(0.5, n11);
+		n12 = st.mutate(0.5, maxH, n11);
 		System.out.println("*****n12 ahora es *******");
 		n12.printPreorder();
 		
