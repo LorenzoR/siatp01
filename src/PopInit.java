@@ -17,11 +17,11 @@ public class PopInit {
 		SyntaxTree st = SetearFabricaDeArboles();
 		
 		int maxCant = 20;
-		int iniD = 0;
-		int finD = 9;
-		int cantD = 2;
-		//List<Node> pop = genPop1(st, iniD, finD,cantD, maxCant);
-		List<Node> pop = genPop2(st, cantD, maxCant);
+		int iniD = 2;
+		int finD = 2;
+		int cantD = 10;
+		List<Node> pop = genPop1(st, iniD, finD, cantD, maxCant);
+		//List<Node> pop = genPop2(st, cantD, maxCant);
 		printPop(pop);
 	}
 	
@@ -64,7 +64,9 @@ public class PopInit {
 			//System.out.println("\nMetodo: 0\n" + "---------" + "\n");
 			for( int j=0; j < cantD/2; j++ ) {
 				if( cant == maxCant ) break;
-				Node t = st.getRandomTree(i, 0);
+				//Node t = st.getRandomTree(i, 0);
+				// Ojo: se cambio a method=1 para testear metodo getRandomTree()
+				Node t = st.getRandomTree(i, 1);
 				//t.printPreorder();
 				cant++;
 				pop.add(t);
