@@ -189,7 +189,12 @@ public class Engine {
 		ArrayList<Population> populations = engine.populationInit();		
 		
 		for( int i=0 ; i<FnInterface.BITS_PER_OUTPUT ; i++ ){
-			Population population = populations.get(i);					
+			Population population = populations.get(i);
+			
+			System.out.println("====> POPULATION " + i);
+			//System.out.println(population);
+			population.print();
+			
 			
 			ArrayList<Individual> parents;
 			ArrayList<Individual> offspring;
@@ -203,6 +208,7 @@ public class Engine {
 			}	
 			engine.showEngineParams();
 			engine.showResult(population, i);
+			
 		}
 		engine.showAllResults();	
 	}
