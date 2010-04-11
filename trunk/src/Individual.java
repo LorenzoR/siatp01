@@ -2,70 +2,44 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Individual implements Cloneable{
-
-	private ArrayList<Boolean> chromosome;
-	private int size;
-	private Random randomGenerator = new Random();
-
-	public Individual(int size) {
-
-		this.chromosome = new ArrayList<Boolean>(size);
-		this.size = size;
-		//Random randomGenerator = new Random();
-
-		for (int i = 0; i < size; i++)
-			this.chromosome.add(i, randomGenerator.nextBoolean());
+	private Node chromosome;	
+	private SyntaxTree stGenerator;
+	private int maxHeight;
+	
+	public Individual(SyntaxTree st, int maxHeight) {
+		Random random = new Random();
+		stGenerator = st;
+		this.maxHeight = maxHeight;
+		this.chromosome = st.getRandomTree(random.nextInt(maxHeight), random.nextInt(2));
 	}
 
-	public Individual(ArrayList<Boolean> chromosome) {
-		this.size = chromosome.size();
-		this.chromosome = chromosome;
-	}
-
-	public void setChromosome(ArrayList<Boolean> chromosome) {
-		this.chromosome = chromosome;
-		this.size = chromosome.size();
+	public Individual(SyntaxTree st, Node otherChromosome) {
+		stGenerator = st;
+		maxHeight = FnInterface.MAX_HEIGHT;
+		this.setChromosome(otherChromosome);
 	}
 	
-	public boolean getChromosome(int index) {
-		return this.chromosome.get(index);
-	}
-	public int getSize(){
-		return this.size;
-	}
-	public ArrayList<Boolean> getChromosome() {
+	public void setChromosome(Node otherChromosome) {			
+		try {
+			chromosome = (Node)otherChromosome.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Individual: "+e.getMessage());
+		}
+	}	
+	public Node getChromosome() {
 		return this.chromosome;
 	}
-
-	public void setChromosome(int index, boolean info) {
-		this.chromosome.set(index, info);
-	}
-
+	
 	public void print() {
-		for (int i = 0; i < this.size; i++) {
-			if ( this.chromosome.get(i) ) {
-				System.out.print("1");
-			}
-			else {
-				System.out.print("0");
-			}
-		}
-		
+		chromosome.printPreorder();
 		System.out.print("\n");
 
 	}
 	/*Para poder usar println() en forma transparente*/
 	public String toString() {
-		StringBuffer resp = new StringBuffer();
-		
-		for (int i = 0; i < this.size; i++) {
-			if ( this.chromosome.get(i) ) {
-				resp.append('1');
-			}
-			else {
-				resp.append('0');
-			}
-		}
+		StringBuffer resp = new StringBuffer();		
+		resp.append("Node\n" + chromosome.toString());
 		return resp.toString();		
 	}
 	
@@ -79,56 +53,31 @@ public class Individual implements Cloneable{
         }catch(CloneNotSupportedException ex){
             System.out.println("No se puede duplicar");
         }        
-        obj.chromosome = (ArrayList<Boolean>)obj.chromosome.clone();
+        try {
+			obj.chromosome = (Node)obj.chromosome.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return obj;
     }
 	
 	public void mutate(double pMut) {
-
-		//Random randomGenerator = new Random();
-		
-		for (int i = 0; i < this.size; i++) {			
-			if (randomGenerator.nextDouble() < pMut) {
-				//System.out.println("\t  --> Mutation in bit " + i);
-				this.chromosome.set(i, !this.chromosome.get(i));
-			}
-
-		}
-
+		chromosome = stGenerator.mutate(pMut, maxHeight, chromosome);
 	}
 
 	public boolean equals( Object obj){		
 		if( obj == null || !(obj instanceof Individual ) )
 			return false;
-		
-		Individual aux = (Individual)obj;
-				
-		return size == aux.getSize() && chromosome.equals(aux.getChromosome());		
+		return true;
 	}
 	
-	public ArrayList<Individual> crossOver(Individual individual) {
-
-		//Random randomGenerator = new Random();
-		int crossPoint = (int) Math.round(randomGenerator.nextDouble()
-				* (this.size - 1));
-		
-		
+	public ArrayList<Individual> crossOver(Individual individual) {				
 		ArrayList<Individual> children = new ArrayList<Individual>(2);
-		children.add(0, new Individual(this.getChromosome()));
-		children.add(1, new Individual(individual.getChromosome()));
-		boolean aux;
-
-		//System.out.println("\t** Cross Point: " + crossPoint);
-
-		for (int i = crossPoint + 1; i < this.size; i++) {
-			aux = children.get(0).getChromosome(i);
-			children.get(0).setChromosome(i, children.get(1).getChromosome(i));
-			children.get(1).setChromosome(i, aux);
-		}
-
+		
+		ArrayList<Node> nodesOffspring = stGenerator.crossOver(this.chromosome, individual.getChromosome() );
+		children.add(0, new Individual(stGenerator, nodesOffspring.get(0)));
+		children.add(1, new Individual(stGenerator, nodesOffspring.get(1)));
 		return children;
-
 	}
-
-
 }

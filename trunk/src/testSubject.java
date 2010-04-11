@@ -10,13 +10,15 @@ public class testSubject {
 	 */
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		int individualSize = 4;
+		// TODO Auto-generated method stub		
 		int frequency = 10;
 		boolean eq;
 		
-		Individual ind1 = new Individual(individualSize);
-		Individual ind2 = new Individual(individualSize);
+		FnImplement fn = new FnImplement();
+		int maxHeight = 2;		
+		
+		Individual ind1 = new Individual(fn.setearFabricaDeArboles(),maxHeight);
+		Individual ind2 = new Individual(fn.setearFabricaDeArboles(),maxHeight);
 		
 		Subject s1 = new Subject(ind1, frequency);
 		

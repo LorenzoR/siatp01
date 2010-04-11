@@ -24,11 +24,13 @@ public class testPopulation {
 		 * //individuo.print();
 		 */
 		int currentGeneration = 0;
-		int populationSize = 4;
-		int individualSize = 5;
+		int populationSize = 4;		
 		double pMut = 0.1;
 		
-		Population population = new Population(populationSize, individualSize);
+		FnImplement fn = new FnImplement();
+		int maxHeight = 2;		
+		
+		Population population = new Population(populationSize, fn.setearFabricaDeArboles(),fn.setearFuncionDeFitness(),maxHeight);
 		Population originalPopulation = (Population)population.clone();
 		ArrayList<Individual> parents;
 		ArrayList<Individual> offspring;
@@ -40,7 +42,7 @@ public class testPopulation {
 			//System.out.println("Poblacion inicial");
 			//population.print();
 			
-			parents = population.selection(2);
+			parents = population.selection(2, 0);
 			//System.out.println("Parents");
 			//System.out.println(parents);
 			System.out.println("\tSelected parents = " + parents);
@@ -65,7 +67,7 @@ public class testPopulation {
 			
 			population.addIndividual(offspring.get(0));
 			population.addIndividual(offspring.get(1));
-			population.replacement(populationSize);
+			population.replacement(populationSize, 0);
 			
 			//population.setPopulation(population.selection(populationSize));
 			//System.out.println("Poblacion Final");
@@ -76,7 +78,7 @@ public class testPopulation {
 		}
 		
 		System.out.println("\nPoblacion Inicial\n" + originalPopulation);
-		//originalPopulation.print();
+		originalPopulation.print();
 		System.out.println("Poblacion Final luego de " + currentGeneration + " generaciones");
 		population.print();
 		

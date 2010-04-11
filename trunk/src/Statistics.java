@@ -27,10 +27,10 @@ public class Statistics {
 		double percentage; 
 		List list = Collections.synchronizedList(subjects); 
         Collections.sort(list);
-        //System.out.println("Ordered List = \n" + list);
+        System.out.println("Ordered List = \n" + list);
         Subject sub = (Subject)list.get(list.size()-1);
         percentage =  ((double)sub.getFrequency())/(double)total ;
-        //System.out.println(percentage);
+        System.out.println(percentage);
         
         resultSubject.setFrequency(sub.getFrequency());
         resultSubject.setIndividual(sub.getIndividual());			

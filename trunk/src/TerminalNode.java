@@ -72,4 +72,11 @@ public class TerminalNode extends Node implements Cloneable {
 		public int size() {
 			return 1;
 		}
+		
+		public boolean equals( Object obj){		
+			if( obj == null || !(obj instanceof TerminalNode ) )
+				return false;
+			TerminalNode n = (TerminalNode)obj;
+			return value == n.value()  &&  name.compareTo(n.getName()) == 0 ; 
+		}
 	}

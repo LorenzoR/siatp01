@@ -5,12 +5,14 @@ public class testStatistics {
 	 * @param args
 	 */
 	public static void main(String[] args) {		
-		int populationSize = 10;
-		int individualSize = 4;
+		int populationSize = 500;		
 		double percentage;
 		Subject sub = new Subject(null, 0);
 		
-		Population population = new Population(populationSize, individualSize);
+		FnImplement fn = new FnImplement();
+		int maxHeight = 2;		
+		
+		Population population = new Population(populationSize,fn.setearFabricaDeArboles(),fn.setearFuncionDeFitness(),maxHeight );
 		System.out.println(population);
 		Statistics stats = new Statistics();
 		stats.setPopulation(population);

@@ -115,4 +115,33 @@ public class FunctionNode extends Node implements Cloneable {
 
 	}
 	
+	public boolean equals( Object obj){
+		boolean nodeResult, leftResult, rightResult;
+		if( obj == null || !(obj instanceof FunctionNode ) )
+			return false;
+		
+		FunctionNode n = (FunctionNode)obj;
+		nodeResult = ( function.compareTo( n.getFunction() ) == 0 )?true:false;
+		
+		if( nodeResult == false)
+			return false;
+		
+		if( this.getLeft() != null )
+			leftResult = this.getLeft().equals(n.getLeft());
+		else
+			leftResult = (n.getLeft() == null)?true: false;
+		
+		if( leftResult == false )
+			return false;
+		
+		if( this.getRight() != null )
+			rightResult = this.getRight().equals(n.getRight());
+		else
+			rightResult = (n.getRight() == null)?true: false;
+		
+		return rightResult;
+		 
+	}
+
+	
 }
