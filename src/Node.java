@@ -55,7 +55,17 @@ public abstract class Node implements Cloneable{
         }       
         return obj;
     }
-	
+	public boolean equals( Object obj){		
+		if( obj == null || !(obj instanceof Node ) )
+			return false;
+		
+		Node n = (Node)obj;
+		
+		if( n instanceof TerminalNode )
+			return ((TerminalNode)n).equals(this);
+		else
+			return ((FunctionNode)n).equals(this); 
+	}
 }
 
 

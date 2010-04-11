@@ -38,10 +38,12 @@ public class Subject implements Comparable {
 		
 		Subject aux = (Subject)obj;
 		Individual auxIndividual = aux.getIndividual();
+		Node auxNode = auxIndividual.getChromosome();
 		
-		//int auxFrequency = aux.getFrequency();		
-		//return individual.getChromosome().equals(auxIndividual.getChromosome()) && frequency == auxFrequency;
-		return individual.getChromosome().equals(auxIndividual.getChromosome());
+		if( auxNode instanceof TerminalNode && individual.getChromosome() instanceof FunctionNode || auxNode instanceof FunctionNode && individual.getChromosome() instanceof TerminalNode )
+			return false;
+		
+		return auxNode.equals(individual.getChromosome());		
 	}
 	
 	public int compareTo(Object obj) {

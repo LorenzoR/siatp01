@@ -1,6 +1,6 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+//import java.util.HashMap;
+//import java.util.Map;
+//import java.util.Random;
 
 
 public class Individuo {
@@ -11,5 +11,7 @@ public class Individuo {
 		this.tree = tree;
 	}
 	
-
+	public Node getTree(){
+		return tree;
+	}
 }

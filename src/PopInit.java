@@ -100,6 +100,7 @@ public class PopInit {
 		// Para h=3 da 36.691.771.392 sobrepasa el contenido de un int
 		
 		// Creo el contenido del arreglo
+		@SuppressWarnings("unused")
 		int aux, auxCant = 0;
 		for( int h=0; h < 3; h++ ) {
 			// Tomo la mitad del maximo posible para generar arboles por h

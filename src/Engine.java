@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.Random;
+
 
 /*
  * CLASE: ENGINE
@@ -10,17 +10,20 @@ import java.util.Random;
  * Statistics stats, es una instancia de la libreria de calculos estadisticos
  * que se aplican sobre la poblacion
 */
-public class Engine {
-	private int chromosomeSize; 
+public class Engine {	 
 	private int populationSize;
 	private double pMut;
 	private int currentGeneration;
 	private int selectionSize;
+	private int maxHeight;
 	private FnImplement myFunctions;
+	private SyntaxTree st;
+	private Fitness f;
 	private Statistics stats;
+	private ArrayList<Node>results;
 		
-	public Engine( int populationSize, int chromosomeSize, double pMut, int selectionSize, FnImplement functions, Statistics stats ){
-		this.chromosomeSize = chromosomeSize;
+	public Engine( int populationSize, int maxHeight, double pMut, int selectionSize, FnImplement functions, Statistics stats ){
+		
 		this.populationSize = populationSize;		
 		this.pMut = pMut;
 		//SelectionSize debe ser par y menor a populationSize
@@ -28,10 +31,14 @@ public class Engine {
 			selectionSize = populationSize / 2;
 		if( selectionSize % 2 != 0 )
 			selectionSize++;
-		this.selectionSize = selectionSize;		
+		this.selectionSize = selectionSize;
 		
 		myFunctions = functions;
+		st = myFunctions.setearFabricaDeArboles();
+		f = myFunctions.setearFuncionDeFitness();
 		this.stats = stats; 
+		this.maxHeight = maxHeight;
+		results = new ArrayList<Node>();
 		currentGeneration = 0;
 	}
 	
@@ -44,12 +51,16 @@ public class Engine {
 		return;
 	}
 	
+	public ArrayList<Population> populationInit(){
+		ArrayList<Population>populations = new ArrayList<Population>(FnInterface.BITS_PER_OUTPUT);
+		for( int i=0 ; i< FnInterface.BITS_PER_OUTPUT; i++ )
+			populations.add(new Population(this.populationSize,st, f, maxHeight ) );
+		return populations;
+	}
+	/*
 	public Population populationInit(FnInterface.ALG_TYPE type ){
 		Population population;		
-		/* Creo una poblacion con CERO individuos. Esta poblacion es una
-		 * especializacion de la clase Population. La subclase a instanciar
-		 * depende del tipo de evolucion que analizamos (Maximizar o minimizar)
-		 */
+		
 		if( type == FnInterface.ALG_TYPE.MINIMIZE )			
 			population = new PopulationMin(0, chromosomeSize);
 		else
@@ -61,17 +72,14 @@ public class Engine {
 			Random number = new Random();
 			double fenotype = number.nextDouble();
 			
-			/* Y lo codifico en un GENOTIPO : estructura que guarda cromosomas
-			 *  en determinados locus. En nuestro caso, hay un solo locus
-			 *  Un cromosoma : es un ArrayList de valores booleanos
-			 */  			
+			  			
 			ArrayList<Boolean> chromosome = myFunctions.encode(fenotype, FnInterface.CHROMOSOME_SIZE );
 			Individual genotype = new Individual( chromosome );			
 			population.addIndividual(genotype);			
 		}
 		return population;
 	}
-	
+	*/
 	public boolean EndCondition(Population population){		
 		double percentage;
 		Subject resultSubject = new Subject(null, 0);
@@ -96,8 +104,8 @@ public class Engine {
 			return false;
 		}
 	}
-	public ArrayList<Individual> selection( Population population ){
-		ArrayList<Individual> resp = population.selection(selectionSize);
+	public ArrayList<Individual> selection( Population population, int outputBit){
+		ArrayList<Individual> resp = population.selection(selectionSize,outputBit);
 		//System.out.println("\tSelected parents = " + resp);
 		return resp;
 	}
@@ -122,11 +130,11 @@ public class Engine {
 		return finalOffspring;
 	}
 	
-	public Population replacement( Population population, ArrayList<Individual> offspring){		
+	public Population replacement( Population population, ArrayList<Individual> offspring, int outputBit){		
 		for( int i=0 ; i<offspring.size() ; i++ ){
 			population.addIndividual(offspring.get(i));
 		}
-		population.replacement(populationSize);
+		population.replacement(populationSize, outputBit);
 		return population;
 	}
 	
@@ -144,18 +152,21 @@ public class Engine {
 		System.out.println( "Parametros del Engine:");
 		System.out.println( "\tPoblacion Total = " + FnInterface.POPULATION_SIZE + " individuos" + 
 							"\n\tSe seleccionan = " + FnInterface.SELECTION_SIZE + " individuos por generacion" + 
-							"\n\tLong de cromosoma = " + FnInterface.CHROMOSOME_SIZE +
+							"\n\tAltura maxima del arbol = " + FnInterface.MAX_HEIGHT +
 							"\n\tSeleccion por Ruleta \n\tReproduccion por Crossover y Mutacion con prob="+FnInterface.MUTATION_PROBABILITY+
 							"\n\tCorte cuando un individuo alcanza el " + FnInterface.HIGHEST_PERCENTAGE*100 + "%, o en su defecto al llegar a " + FnInterface.MAX_GENERATIONS + " generaciones");
 	}
 	
-	public void showResults(Population population){
+	public void showResult(Population population, int outputBit){
 		//System.out.println("\nPoblacion Inicial\n" + originalPopulation);		
 		//System.out.println("Poblacion Final luego de " + engine.getCurrentGeneration() + " generaciones\n" + population);
-		Individual selectedIndividual =  new Individual(FnInterface.CHROMOSOME_SIZE);
+		Individual selectedIndividual =  new Individual(st, FnInterface.MAX_HEIGHT);
 		double percentage = getSelectedIndividual(population, selectedIndividual);
-		System.out.println("\nResultados:");
-		System.out.println("\tIndividuo seleccionado = " + selectedIndividual + "\n\tFenotipo = " + myFunctions.decode( selectedIndividual.getChromosome() ) );
+		System.out.println("\nResultados para el BIT " + outputBit +":");
+		//System.out.println("\tIndividuo seleccionado = " + selectedIndividual + "\n\tFenotipo = " + myFunctions.decode( selectedIndividual.getChromosome() ) );
+		System.out.println("\tIndividuo seleccionado = ");
+		selectedIndividual.getChromosome().printPreorder();
+		results.add(selectedIndividual.getChromosome());
 		System.out.println("\tPorcentaje en la Poblacion = " + percentage*100 + "% , luego de " + getCurrentGeneration() + " generaciones");
 	}
 	/**
@@ -169,27 +180,49 @@ public class Engine {
 		Statistics stats = new Statistics(); 
 		
 		//Inicializo el engine del AG, SELECTION_SIZE debe ser par, y menor que POPULATION_SIZE
-		Engine engine = new Engine( FnInterface.POPULATION_SIZE, FnInterface.CHROMOSOME_SIZE, 
+		Engine engine = new Engine( FnInterface.POPULATION_SIZE,FnInterface.MAX_GENERATIONS , 
 						FnInterface.MUTATION_PROBABILITY, FnInterface.SELECTION_SIZE, myFunctions,
 						stats);
+			
 		
 		//Inicializo la poblacion, el paramero algType define si voy a minimizar o maximizar
-		Population population = engine.populationInit(FnInterface.algType);
-		@SuppressWarnings("unused")
-		Population originalPopulation = (Population)population.clone();
+		ArrayList<Population> populations = engine.populationInit();		
 		
-		ArrayList<Individual> parents;
-		ArrayList<Individual> offspring;
+		for( int i=0 ; i<FnInterface.BITS_PER_OUTPUT ; i++ ){
+			Population population = populations.get(i);					
+			
+			ArrayList<Individual> parents;
+			ArrayList<Individual> offspring;
+			
+			while( !engine.EndCondition(population) ){
+				parents = engine.selection(population, i);			
+				offspring = engine.reproduction(parents);			
+				population = (Population)engine.replacement(population, offspring, i);
+				engine.incrementCurrentGeneration();
+				System.out.println("Iteracion " + engine.getCurrentGeneration());
+			}	
+			engine.showEngineParams();
+			engine.showResult(population, i);
+		}
+		engine.showAllResults();	
+	}
+
+	private void showAllResults() {
+		// TODO Auto-generated method stub
+		/*
+		StringBuffer ans = new StringBuffer();
 		
-		while( !engine.EndCondition(population) ){
-			parents = engine.selection(population);			
-			offspring = engine.reproduction(parents);			
-			population = (Population)engine.replacement(population, offspring);
-			engine.incrementCurrentGeneration();
-			System.out.println("Iteracion " + engine.getCurrentGeneration());
-		}	
-		engine.showEngineParams();
-		engine.showResults(population);				
+		for( int i=0 ; i<results.size() ; i++ ){
+			boolean bitValue = results.get(results.size()-i-1).value();
+			ans.append((bitValue==true)?"1":"0");
+		}
+			System.out.println("RESULT R6...R0 = > " + ans.toString());
+		*/
+		for( int i=0 ; i<results.size() ; i++ ){
+			System.out.println("=====> BIT " + i + " ,  SIZE = "+results.get(i).size());
+			results.get(i).printPreorder();
+		}
+		
 	}
 	
 }
