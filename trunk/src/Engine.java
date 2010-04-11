@@ -34,8 +34,8 @@ public class Engine {
 		this.selectionSize = selectionSize;
 		
 		myFunctions = functions;
-		st = myFunctions.setearFabricaDeArboles();
-		f = myFunctions.setearFuncionDeFitness();
+		st = myFunctions.setSyntaxTree(FnInterface.terminals, FnInterface.functions, FnInterface.arities);
+		f = myFunctions.setFitnessFunction(FnInterface.terminals);
 		this.stats = stats; 
 		this.maxHeight = maxHeight;
 		results = new ArrayList<Node>();
@@ -54,7 +54,7 @@ public class Engine {
 	public ArrayList<Population> populationInit(){
 		ArrayList<Population>populations = new ArrayList<Population>(FnInterface.BITS_PER_OUTPUT);
 		for( int i=0 ; i< FnInterface.BITS_PER_OUTPUT; i++ )
-			populations.add(new Population(this.populationSize,st, f, maxHeight ) );
+			populations.add(new Population(this.populationSize,st, f, maxHeight, i ) );
 		return populations;
 	}
 	/*
@@ -104,23 +104,23 @@ public class Engine {
 			return false;
 		}
 	}
-	public ArrayList<Individual> selection( Population population, int outputBit){
-		ArrayList<Individual> resp = population.selection(selectionSize,outputBit);
+	public ArrayList<Individual> selection( Population population){
+		ArrayList<Individual> resp = population.selection(selectionSize);
 		//System.out.println("\tSelected parents = " + resp);
 		return resp;
 	}
 	
-	public ArrayList<Individual> reproduction( ArrayList<Individual> parents ){
+	public ArrayList<Individual> reproduction( ArrayList<Individual> parents, int outputBit ){
 		ArrayList<Individual> offspring;		
 		ArrayList<Individual> finalOffspring = new ArrayList<Individual>(parents.size());		
 		
 		for( int i=0; i<parents.size(); i++ ){
-			offspring = parents.get(i).crossOver(parents.get(i+1));
+			offspring = parents.get(i).crossOver(parents.get(i+1), outputBit);
 			//System.out.println("\tCrossOver result = " + offspring );			
 			//System.out.println("\t** Offspring " + i + " Mutation");
-			offspring.get(0).mutate(pMut);
+			offspring.get(0).mutate(pMut, outputBit);
 			//System.out.println("\t** Offspring " + (i+1) + " Mutation");
-			offspring.get(1).mutate(pMut);
+			offspring.get(1).mutate(pMut, outputBit);
 			//System.out.println("\tMutation result  = " + offspring );			
 			finalOffspring.add(offspring.get(0));
 			finalOffspring.add(offspring.get(1));
@@ -130,11 +130,11 @@ public class Engine {
 		return finalOffspring;
 	}
 	
-	public Population replacement( Population population, ArrayList<Individual> offspring, int outputBit){		
-		for( int i=0 ; i<offspring.size() ; i++ ){
+	public Population replacement( Population population, ArrayList<Individual> offspring){		
+		for( int i=0 ; i < offspring.size() ; i++ ){
 			population.addIndividual(offspring.get(i));
 		}
-		population.replacement(populationSize, outputBit);
+		population.replacement(populationSize);
 		return population;
 	}
 	
@@ -160,7 +160,7 @@ public class Engine {
 	public void showResult(Population population, int outputBit){
 		//System.out.println("\nPoblacion Inicial\n" + originalPopulation);		
 		//System.out.println("Poblacion Final luego de " + engine.getCurrentGeneration() + " generaciones\n" + population);
-		Individual selectedIndividual =  new Individual(st, FnInterface.MAX_HEIGHT);
+		Individual selectedIndividual =  new Individual(st, FnInterface.MAX_HEIGHT, f, outputBit);
 		double percentage = getSelectedIndividual(population, selectedIndividual);
 		System.out.println("\nResultados para el BIT " + outputBit +":");
 		//System.out.println("\tIndividuo seleccionado = " + selectedIndividual + "\n\tFenotipo = " + myFunctions.decode( selectedIndividual.getChromosome() ) );
@@ -180,7 +180,7 @@ public class Engine {
 		Statistics stats = new Statistics(); 
 		
 		//Inicializo el engine del AG, SELECTION_SIZE debe ser par, y menor que POPULATION_SIZE
-		Engine engine = new Engine( FnInterface.POPULATION_SIZE,FnInterface.MAX_GENERATIONS , 
+		Engine engine = new Engine( FnInterface.POPULATION_SIZE, FnInterface.MAX_HEIGHT, 
 						FnInterface.MUTATION_PROBABILITY, FnInterface.SELECTION_SIZE, myFunctions,
 						stats);
 			
@@ -191,18 +191,18 @@ public class Engine {
 		for( int i=0 ; i<FnInterface.BITS_PER_OUTPUT ; i++ ){
 			Population population = populations.get(i);
 			
-			System.out.println("====> POPULATION " + i);
+			//System.out.println("====> POPULATION " + i);
 			//System.out.println(population);
-			population.print();
+			//population.print();
 			
 			
 			ArrayList<Individual> parents;
 			ArrayList<Individual> offspring;
 			
 			while( !engine.EndCondition(population) ){
-				parents = engine.selection(population, i);			
-				offspring = engine.reproduction(parents);			
-				population = (Population)engine.replacement(population, offspring, i);
+				parents = engine.selection(population);			
+				offspring = engine.reproduction(parents, i);			
+				population = (Population)engine.replacement(population, offspring);
 				engine.incrementCurrentGeneration();
 				System.out.println("Iteracion " + engine.getCurrentGeneration());
 			}	

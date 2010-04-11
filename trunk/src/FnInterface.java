@@ -10,16 +10,16 @@ public interface FnInterface {
 	
 	
 	/* Definiciones que caracterizan a la poblacion y su evolucion */	 
-	public int POPULATION_SIZE = 100;//600;
+	public int POPULATION_SIZE = 10;//600;
 	public double MUTATION_PROBABILITY = 0.01;	
-	public int SELECTION_SIZE = 20;//300;
-	public int MAX_GENERATIONS = 3;//8;
+	public int SELECTION_SIZE = 2;//300;
+	public int MAX_GENERATIONS = 10;//8;
 	public double HIGHEST_PERCENTAGE = 0.6;
 		
 	/* Altura maxima de los arboles que se generan para la poblacion o 
 	 * para la mutacion
 	 */ 
-	public static final int MAX_HEIGHT = 4;
+	public static final int MAX_HEIGHT = 2;
 	
 	/* Tenemos CANT_INPUTS palabras de entrada, cada una con BITS_PER_INPUR 
 	 * bit. Y en la salida
@@ -29,12 +29,16 @@ public interface FnInterface {
 	 */
 	public static final int CANT_INPUTS = 2;
 	public static final int BITS_PER_INPUT = 4;
-	public static final int BITS_PER_OUTPUT = 3;
+	public static final int BITS_PER_OUTPUT = 1;
+	
+	public static final String[] terminals = {"B0", "B1", "A0", "A1"};
+	public static final String[] functions = {"AND", "OR", "NOT"};
+	public static final int[] arities = {2, 2, 1};
 	
 	/*Me permite crear las clases que hacen posible el cruce, la mutacion 
 	 * y el calculo de la aptitud
 	 */
-	public SyntaxTree setearFabricaDeArboles();
-	public Fitness setearFuncionDeFitness();
+	public SyntaxTree setSyntaxTree(String[] terminals, String[] functions, int[]arities);
+	public Fitness setFitnessFunction(String[] terminals);
 	
 }

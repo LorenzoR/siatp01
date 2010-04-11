@@ -5,18 +5,24 @@ public class Individual implements Cloneable{
 	private Node chromosome;	
 	private SyntaxTree stGenerator;
 	private int maxHeight;
+	private int fitnessValue;
+	private Fitness f;
 	
-	public Individual(SyntaxTree st, int maxHeight) {
+	public Individual(SyntaxTree st, int maxHeight, Fitness f, int outputBit) {
 		Random random = new Random();
 		stGenerator = st;
 		this.maxHeight = maxHeight;
-		this.chromosome = st.getRandomTree(random.nextInt(maxHeight), random.nextInt(2));
+		this.chromosome = st.getRandomTree(random.nextInt(maxHeight+1), random.nextInt(2));
+		this.fitnessValue = f.fitnessValue(chromosome, outputBit);
+		this.f = f;
 	}
 
-	public Individual(SyntaxTree st, Node otherChromosome) {
+	public Individual(SyntaxTree st, Node otherChromosome, Fitness f, int outputBit) {
 		stGenerator = st;
 		maxHeight = FnInterface.MAX_HEIGHT;
+		this.f = f;
 		this.setChromosome(otherChromosome);
+		this.fitnessValue = f.fitnessValue(chromosome, outputBit);
 	}
 	
 	public void setChromosome(Node otherChromosome) {			
@@ -26,7 +32,8 @@ public class Individual implements Cloneable{
 			// TODO Auto-generated catch block
 			System.out.println("Individual: "+e.getMessage());
 		}
-	}	
+	}
+		
 	public Node getChromosome() {
 		return this.chromosome;
 	}
@@ -62,8 +69,9 @@ public class Individual implements Cloneable{
         return obj;
     }
 	
-	public void mutate(double pMut) {
+	public void mutate(double pMut, int outputBit) {
 		chromosome = stGenerator.mutate(pMut, maxHeight, chromosome);
+		fitnessValue = f.fitnessValue(chromosome, outputBit);
 	}
 
 	public boolean equals( Object obj){		
@@ -72,12 +80,16 @@ public class Individual implements Cloneable{
 		return true;
 	}
 	
-	public ArrayList<Individual> crossOver(Individual individual) {				
+	public ArrayList<Individual> crossOver(Individual individual, int outputBit) {				
 		ArrayList<Individual> children = new ArrayList<Individual>(2);
 		
 		ArrayList<Node> nodesOffspring = stGenerator.crossOver(this.chromosome, individual.getChromosome() );
-		children.add(0, new Individual(stGenerator, nodesOffspring.get(0)));
-		children.add(1, new Individual(stGenerator, nodesOffspring.get(1)));
+		children.add(0, new Individual(stGenerator, nodesOffspring.get(0), f, outputBit));
+		children.add(1, new Individual(stGenerator, nodesOffspring.get(1), f, outputBit));
 		return children;
+	}
+	
+	public int fitnessValue (){
+		return fitnessValue;
 	}
 }
