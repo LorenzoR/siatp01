@@ -41,11 +41,11 @@ public class FnImplement implements FnInterface {
 		Map<String, Boolean> terminalSet = new HashMap<String, Boolean>();
 		Random r = new Random();
 		terminalSet.put("A0", r.nextBoolean());
-		//terminalSet.put("A1", r.nextBoolean());
+		terminalSet.put("A1", r.nextBoolean());
 		//terminalSet.put("A2", r.nextBoolean());
 		//terminalSet.put("A3", r.nextBoolean());
 		terminalSet.put("B0", r.nextBoolean());
-		//terminalSet.put("B1", r.nextBoolean());
+		terminalSet.put("B1", r.nextBoolean());
 		//terminalSet.put("B2", r.nextBoolean());
 		//terminalSet.put("B3", r.nextBoolean());
 
@@ -65,8 +65,8 @@ public class FnImplement implements FnInterface {
 		terminalMask.put("B2", 4);
 		terminalMask.put("B1", 2);
 		 */
-		//terminalMask.put("A1", 32);
-		//terminalMask.put("B1", 2);
+		terminalMask.put("A1", 32);
+		terminalMask.put("B1", 2);
 		terminalMask.put("A0", 2);
 		terminalMask.put("B0", 1);		// bit0: 2^0
 	/*

@@ -28,7 +28,7 @@ public class testPopulation {
 		double pMut = 0.1;
 		
 		FnImplement fn = new FnImplement();
-		int maxHeight = 2;		
+		int maxHeight = 4;		
 		
 		Population population = new Population(populationSize, fn.setearFabricaDeArboles(),fn.setearFuncionDeFitness(),maxHeight);
 		Population originalPopulation = (Population)population.clone();

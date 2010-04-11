@@ -205,7 +205,17 @@ public class Population implements Cloneable {
 	
 	public ArrayList<Individual> selection(int cant, int outputBit) {
 		
-		return universalSelection(cant, outputBit);
+		//return universalSelection(cant, outputBit);		
+		int type = this.selectTypeToInt(FnInterface.CONFIG_SELECTION);
+		
+		switch( type ){
+			case 0: return universalSelection(cant, outputBit);
+			case 1: return eliteSelection(cant, outputBit);
+			case 2: return eliteRouletteSelection(cant, cant, outputBit);
+			case 3: return eliteUniversalSelection(cant, cant, outputBit);
+			default: return universalSelection(cant, outputBit);
+		}
+		
 		/*//ArrayList<Individual> resp = new ArrayList<Individual>(cant);
 		ArrayList<Individual> resp = new ArrayList<Individual>(0);
 		ArrayList<Double> r = new ArrayList<Double>(cant);
@@ -308,7 +318,17 @@ public class Population implements Cloneable {
 	*/
 	
 	public ArrayList<Individual> replacement ( int cant, int outputBit ) {
-		ArrayList<Individual> newPopulation = this.selection(cant, outputBit);
+		ArrayList<Individual> newPopulation;
+		int type = this.selectTypeToInt(FnInterface.CONFIG_REPLACEMENT);
+		
+		switch( type ){
+			case 0: newPopulation = universalSelection(cant, outputBit);break;
+			case 1: newPopulation = eliteSelection(cant, outputBit);break;
+			case 2: newPopulation = eliteRouletteSelection(cant, cant, outputBit);break;
+			case 3: newPopulation = eliteUniversalSelection(cant, cant, outputBit);break;
+			default: newPopulation = universalSelection(cant, outputBit);
+		}
+		
 		this.setPopulation(newPopulation);
 		
 		return newPopulation;		
@@ -344,5 +364,18 @@ public class Population implements Cloneable {
 		}
 		return resp.toString();
 	}		
-	
+	private int selectTypeToInt(FnInterface.SELECT_TYPE type){
+		//UNIVERSAL, ELITE, ROULETTE, ELITE_ROULETTE, ELITE_UNIVERSAL
+		if( type == FnInterface.SELECT_TYPE.UNIVERSAL)
+			return 0;
+		if( type == FnInterface.SELECT_TYPE.ELITE)
+			return 1;
+		if( type == FnInterface.SELECT_TYPE.ROULETTE)
+			return 2;
+		if( type == FnInterface.SELECT_TYPE.ELITE_ROULETTE)
+			return 3;
+		if( type == FnInterface.SELECT_TYPE.ELITE_UNIVERSAL)
+			return 4;
+		return 0;
+	}
 }
