@@ -42,13 +42,6 @@ public class TerminalNode extends Node implements Cloneable {
 			System.out.println(name + ": " + value);
 		}
 
-		/*public void setValue(Node tree) {
-			//super.tree = tree;
-			//System.out.println("El nuevo valor es " + tree);
-			this.value = ((TerminalNode) tree).value();
-			this.name = ((TerminalNode) tree).getName();			
-		}*/
-
 		public Object clone(){
 	       TerminalNode obj=null;
 	        try{

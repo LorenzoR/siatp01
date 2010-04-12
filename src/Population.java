@@ -84,7 +84,6 @@ public class Population implements Cloneable {
 		ArrayList<Individual> resp = new ArrayList<Individual>(0);
 		ArrayList<Integer> aptitud = new ArrayList<Integer>(this.size);
 		
-		// Computo de aptitudes y aptitud total
 		for ( int i = 0; i < this.size; i++ ) {
 			aptitud.add(i, population.get(i).fitnessValue());
 		}
@@ -92,21 +91,11 @@ public class Population implements Cloneable {
 		Collections.sort(aptitud, Collections.reverseOrder());
 		
 		List<Integer> best = aptitud.subList(0, cant);
-
-		
-		/*for ( int i = 0, j = 0; i < this.size() && j < cant; i++ ) {
-			if ( best.contains(population.get(i).fitnessValue())) {
-				//System.out.println("Best contiene a " + this.fitness(population.get(i)));
-				//System.out.println("Elijo " + i);
-				resp.add( j++, (Individual)population.get(i).clone() );
-			}
-		}*/
 		
 		for ( int i = 0; i < best.size(); i++ ) {
 			for ( int j = 0; j < this.size(); j++ ) {
 				if ( best.get(i) == population.get(j).fitnessValue() ) {
 					resp.add( i, (Individual)population.get(j).clone() );
-					//System.out.println("Agrego " + population.get(j).fitnessValue());
 					break;
 				}
 			}
@@ -211,8 +200,7 @@ public class Population implements Cloneable {
 	}
 	
 	public ArrayList<Individual> selection(int cant) {
-		
-		//return universalSelection(cant, outputBit);		
+			
 		int type = this.selectTypeToInt(FnInterface.CONFIG_SELECTION);
 		
 		switch( type ){
@@ -223,107 +211,8 @@ public class Population implements Cloneable {
 			case 4: return eliteUniversalSelection(cant/2, cant/2);
 			default: return universalSelection(cant);
 		}
-		
-		/*//ArrayList<Individual> resp = new ArrayList<Individual>(cant);
-		ArrayList<Individual> resp = new ArrayList<Individual>(0);
-		ArrayList<Double> r = new ArrayList<Double>(cant);
-		//Random randomGenerator = new Random();
-		Double randomNumber = randomGenerator.nextDouble();
-		ArrayList<Double> aptitud = new ArrayList<Double>(this.size);
-		ArrayList<Double> relativeAptitud = new ArrayList<Double>(this.size);
-		ArrayList<Double> accumulatedAptitud = new ArrayList<Double>(this.size);
-		double totalAptitud = 0;
-		
-		//Detecto si me piden seleccionar una cantidad negativa
-		if( cant < 0 )
-			cant = 0;		
-		//Si me piden seleccionar una cantidad igual a la poblacion, entonces
-		//devuelvo directamente la poblacion
-		if( cant >= FnInterface.POPULATION_SIZE )
-			return this.population;
-		
-		// Computo de Ri
-		for (int i = 1; i <= cant; i++) {
-			r.add(i-1, ( randomNumber + i - 1 ) / cant);
-		}
-		
-		// Computo de aptitudes y aptitud total
-		for ( int i = 0; i < this.size; i++ ) {
-			//aptitud.add(i, population.get(i).getFitness());
-			aptitud.add(i, this.fitness(population.get(i)) );
-			totalAptitud += aptitud.get(i);
-		}
-		
-		// Computo de aptitudes relativas
-		for ( int i = 0; i < this.size; i++ ) {
-			relativeAptitud.add(i, aptitud.get(i) / totalAptitud);
-		}
-		
-		// Computo de aptitudes acumuladas
-		accumulatedAptitud.add(0, relativeAptitud.get(0));
-		for ( int i = 1; i < this.size; i++ ) {
-			accumulatedAptitud.add(i, accumulatedAptitud.get(i - 1) + relativeAptitud.get(i));
-		}
-		
-		
-		for( int i=0 ; i < r.size() ; i++ ){
-			for( int j=0; j< accumulatedAptitud.size() ; j++ )
-				if( r.get(i) < accumulatedAptitud.get(j) ){					
-					resp.add( i, (Individual)population.get(j).clone() );
-					break;
-				}					
-		}
-		return resp;*/
 	}
 
-	
-	
-	/*
-	public ArrayList<Individual> selection(int cant, int outputBit) {
-		//ArrayList<Individual> resp = new ArrayList<Individual>(cant);
-		ArrayList<Individual> resp = new ArrayList<Individual>(0);
-		ArrayList<Double> r = new ArrayList<Double>(cant);
-		//Random randomGenerator = new Random();
-		Double randomNumber = randomGenerator.nextDouble();
-		ArrayList<Integer> aptitud = new ArrayList<Integer>(this.size);
-		ArrayList<Double> relativeAptitud = new ArrayList<Double>(this.size);
-		ArrayList<Double> accumulatedAptitud = new ArrayList<Double>(this.size);
-		double totalAptitud = 0;
-		
-		// Computo de Ri
-		for (int i = 1; i <= cant; i++) {
-			r.add(i-1, ( randomNumber + i - 1 ) / cant);
-		}
-		
-		// Computo de aptitudes y aptitud total
-		for ( int i = 0; i < this.size; i++ ) {
-			//aptitud.add(i, population.get(i).getFitness());
-			aptitud.add(i, st.fitness(population.get(i).getChromosome(),FnInterface.BITS_PER_INPUT, outputBit ) );
-			totalAptitud += aptitud.get(i);
-		}
-		
-		// Computo de aptitudes relativas
-		for ( int i = 0; i < this.size; i++ ) {
-			relativeAptitud.add(i, aptitud.get(i) / totalAptitud);
-		}
-		
-		// Computo de aptitudes acumuladas
-		accumulatedAptitud.add(0, relativeAptitud.get(0));
-		for ( int i = 1; i < this.size; i++ ) {
-			accumulatedAptitud.add(i, accumulatedAptitud.get(i - 1) + relativeAptitud.get(i));
-		}
-		
-		
-		for( int i=0 ; i < r.size() ; i++ ){
-			for( int j=0; j< accumulatedAptitud.size() ; j++ )
-				if( r.get(i) < accumulatedAptitud.get(j) ){					
-					resp.add( i, (Individual)population.get(j).clone() );
-					break;
-				}					
-		}
-		return resp;
-	}
-	*/
 	
 	public ArrayList<Individual> replacement ( int cant ) {
 		ArrayList<Individual> newPopulation;
@@ -347,25 +236,14 @@ public class Population implements Cloneable {
 		this.population.add(individual);
 		this.size++;
 	}
-	/*
-	public double fitness( Individual individual){
-		double sum = 0;
-		System.out.println("POPULATION , COMMON FITHNESS");
-		
-		//for ( int i = 0; i < individual.getSize(); i++ ) {
-		//	if ( individual.getChromosome().get(i) )
-		//		sum++;
-		//}
-		
-		return sum;
-	}
-	*/
+
 	public void print() {
 		for (int i = 0; i < this.size; i++) {
 			System.out.println("Individuo " + i + ": " + ", fit = " + population.get(i).fitnessValue());
 			population.get(i).print();
 		}
 	}
+	
 	public String toString(){
 		
 		StringBuffer resp = new StringBuffer();

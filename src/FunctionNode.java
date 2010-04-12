@@ -64,13 +64,6 @@ public class FunctionNode extends Node implements Cloneable {
 		System.out.println(function);
 	}
 
-	/*public void setValue(Node tree) {
-		//super.tree = tree;
-		this.function = ((FunctionNode) tree).getFunction();
-		this.left = tree.getLeft();
-		this.right = tree.getRight();
-		
-	}*/
 	public Object clone(){
 	       FunctionNode obj=null;
 	        try{
@@ -84,13 +77,12 @@ public class FunctionNode extends Node implements Cloneable {
 				if( right != null )
 		        	obj.right = (Node)right.clone();
 			} catch (CloneNotSupportedException e) {
-				// TODO Auto-generated catch block
 				System.out.println("No se puede duplicar Function Node interamente");
 			}
 	        
 	        return obj;
 	    }
-	@Override
+
 	public String toString() {
 		return this.function;
 	}
