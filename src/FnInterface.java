@@ -55,8 +55,8 @@ public interface FnInterface {
 	
 	public static final String[] terminals = {"B0", "B1", "B2", "B3", "A0", "A1", "A2", "A3"};
 	//public static final String[] terminals = {"B0", "A0"};
-	public static final String[] functions = {"AND", "OR", "NOT", "XOR", "NAND", "NOR"};
-	public static final int[] arities = {2, 2, 1, 2, 2, 2};
+	public static final String[] functions = {"AND", "OR", "NOT", "XOR", "NAND", "NOR", "XNOR"};
+	public static final int[] arities = {2, 2, 1, 2, 2, 2, 2};
 	
 	/*Me permite crear las clases que hacen posible el cruce, la mutacion 
 	 * y el calculo de la aptitud
