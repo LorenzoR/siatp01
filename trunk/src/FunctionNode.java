@@ -55,6 +55,12 @@ public class FunctionNode extends Node implements Cloneable {
 			} else if (right == null) {
 				return !left.value();
 			}
+		} else if ( function.equalsIgnoreCase("XOR")) {
+			return left.value() ^ right.value();
+		} else if ( function.equalsIgnoreCase("NAND")) {
+			return !( left.value() & right.value() );
+		} else if ( function.equalsIgnoreCase("NOR")) {
+			return !(left.value() | right.value() );
 		}
 
 		return false;

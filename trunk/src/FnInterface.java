@@ -5,14 +5,14 @@ public interface FnInterface {
 	public enum SELECT_TYPE{UNIVERSAL, ELITE, ROULETTE, ELITE_ROULETTE, ELITE_UNIVERSAL};
 	
 	/*Defino que metodo se usara para la seleccion y el reemplazo*/
-	public static final SELECT_TYPE CONFIG_SELECTION = SELECT_TYPE.UNIVERSAL;
-	public static final SELECT_TYPE CONFIG_REPLACEMENT = SELECT_TYPE.UNIVERSAL;
+	public static final SELECT_TYPE CONFIG_SELECTION = SELECT_TYPE.ELITE_ROULETTE;
+	public static final SELECT_TYPE CONFIG_REPLACEMENT = SELECT_TYPE.ELITE_ROULETTE;
 	
 	
 	/* Definiciones que caracterizan a la poblacion y su evolucion */	 
-	public static final int POPULATION_SIZE = 100;//600;
+	public static final int POPULATION_SIZE = 1000;//600;
 	public static final double MUTATION_PROBABILITY = 0.1;	
-	public static final int SELECTION_SIZE = 50;//300;
+	public static final int SELECTION_SIZE = 500;//300;
 
 	public static int MAX_GENERATIONS = 20;//8;
 	public static double HIGHEST_PERCENTAGE = 1;
@@ -21,7 +21,7 @@ public interface FnInterface {
 	//maximo, muestra el resultado, pero sigue indefinidamente
 	//Permita seguir evolucionando y ver si todo la poblacion camina hacia	
 	//alguno de los individuos maximos hallados
-	public static final boolean NEVER_CUT = true;
+	public static final boolean NEVER_CUT = false;
 	
 	//Permite cortar tan pronto se encuentra un individuo con aptitud maxima
 	//Este seteo tiene mas prioridad que MAX_GENERATIONS
@@ -32,10 +32,10 @@ public interface FnInterface {
 	/* Altura maxima de los arboles que se generan para la poblacion o 
 	 * para la mutacion
 	 */ 
-	public static final int MAX_HEIGHT = 1;
+	public static final int MAX_HEIGHT = 4;
 	
 	//Elegimos el bit a resolver
-	public static final int BIT_TO_RESOLVE = 0;
+	public static final int BIT_TO_RESOLVE = 3;
 	
 	//Habilita info estadistica que se muestra al correr el engine
 	public static final boolean SHOW_MOST_FREQUENT_INDIVIDUAL = false;
@@ -55,8 +55,8 @@ public interface FnInterface {
 	
 	public static final String[] terminals = {"B0", "B1", "B2", "B3", "A0", "A1", "A2", "A3"};
 	//public static final String[] terminals = {"B0", "A0"};
-	public static final String[] functions = {"AND", "OR", "NOT"};
-	public static final int[] arities = {2, 2, 1};
+	public static final String[] functions = {"AND", "OR", "NOT", "XOR", "NAND", "NOR"};
+	public static final int[] arities = {2, 2, 1, 2, 2, 2};
 	
 	/*Me permite crear las clases que hacen posible el cruce, la mutacion 
 	 * y el calculo de la aptitud
