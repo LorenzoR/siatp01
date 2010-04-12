@@ -11,19 +11,28 @@ public interface FnInterface {
 	
 	/* Definiciones que caracterizan a la poblacion y su evolucion */	 
 	public static final int POPULATION_SIZE = 100;//600;
-	public static final double MUTATION_PROBABILITY = 0.001;	
-	public static final int SELECTION_SIZE = 6;//300;
+	public static final double MUTATION_PROBABILITY = 0.1;	
+	public static final int SELECTION_SIZE = 50;//300;
 
 	public static int MAX_GENERATIONS = 20;//8;
 	public static double HIGHEST_PERCENTAGE = 1;
 	
+	//Con este seteo, el algoritmo nunca termina. Al encontrar un individuo
+	//maximo, muestra el resultado, pero sigue indefinidamente
+	//Permita seguir evolucionando y ver si todo la poblacion camina hacia	
+	//alguno de los individuos maximos hallados
+	public static final boolean NEVER_CUT = true;
+	
 	//Permite cortar tan pronto se encuentra un individuo con aptitud maxima
+	//Este seteo tiene mas prioridad que MAX_GENERATIONS
 	public static final boolean CUT_AT_FIRST_BEST = true;
+	
+	
 	
 	/* Altura maxima de los arboles que se generan para la poblacion o 
 	 * para la mutacion
 	 */ 
-	public static final int MAX_HEIGHT = 0;
+	public static final int MAX_HEIGHT = 1;
 	
 	//Elegimos el bit a resolver
 	public static final int BIT_TO_RESOLVE = 0;
