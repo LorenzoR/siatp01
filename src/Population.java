@@ -214,8 +214,9 @@ public class Population implements Cloneable {
 		switch( type ){
 			case 0: return universalSelection(cant);
 			case 1: return eliteSelection(cant);
-			case 2: return eliteRouletteSelection(cant/2, cant/2);
-			case 3: return eliteUniversalSelection(cant/2, cant/2);
+			case 2: return rouletteSelection(cant);
+			case 3: return eliteRouletteSelection(cant/2, cant/2);
+			case 4: return eliteUniversalSelection(cant/2, cant/2);
 			default: return universalSelection(cant);
 		}
 		
@@ -327,8 +328,9 @@ public class Population implements Cloneable {
 		switch( type ){
 			case 0: newPopulation = universalSelection(cant);break;
 			case 1: newPopulation = eliteSelection(cant);break;
-			case 2: newPopulation = eliteRouletteSelection(cant, cant);break;
-			case 3: newPopulation = eliteUniversalSelection(cant, cant);break;
+			case 2: newPopulation = rouletteSelection(cant);break;
+			case 3: newPopulation = eliteRouletteSelection(cant/2, cant/2);break;
+			case 4: newPopulation = eliteUniversalSelection(cant/2, cant/2);break;
 			default: newPopulation = universalSelection(cant);
 		}
 		

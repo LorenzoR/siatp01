@@ -136,7 +136,8 @@ public class Engine {
 		System.out.println( "\tPoblacion Total = " + FnInterface.POPULATION_SIZE + " individuos" + 
 							"\n\tSe seleccionan = " + FnInterface.SELECTION_SIZE + " individuos por generacion" + 
 							"\n\tAltura maxima del arbol = " + FnInterface.MAX_HEIGHT +
-							"\n\tSeleccion por Ruleta \n\tReproduccion por Crossover y Mutacion con prob="+FnInterface.MUTATION_PROBABILITY+
+							"\n\tSeleccion por " + FnInterface.CONFIG_SELECTION + "\n\tReemplazo por " + FnInterface.CONFIG_REPLACEMENT +
+							"\n\tReproduccion por Crossover y Mutacion con prob="+FnInterface.MUTATION_PROBABILITY+
 							"\n\tCorte cuando un individuo alcanza el " + FnInterface.HIGHEST_PERCENTAGE*100 + "%, o en su defecto al llegar a " + FnInterface.MAX_GENERATIONS + " generaciones");
 	}
 	
@@ -148,7 +149,7 @@ public class Engine {
 		double percentage = getSelectedIndividual(population, selectedIndividual);
 		Node selectedNode = selectedIndividual.getChromosome();
 		*/
-		System.out.println("\nResultados para el BIT " + outputBit + " ,  CANT NODE = "+stats.getMaxFitnessNode().size()+" ,  FITNESS = "+stats.getBestIndividualFitness());
+		System.out.println("\nResultados para el BIT " + outputBit + " ,  CANT NODE = "+stats.getMaxFitnessNode().size()+" ,  FITNESS = "+stats.getBestIndividualFitness()+" ,  CANT ITERACIONES = "+getCurrentGeneration());
 		//System.out.println("Porcentaje en la Poblacion = " + percentage*100 + "% , luego de " + getCurrentGeneration() + " generaciones");
 		System.out.println("Individuo seleccionado = ");
 		stats.getMaxFitnessNode().printPreorder();	
