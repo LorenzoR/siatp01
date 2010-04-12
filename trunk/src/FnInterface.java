@@ -17,12 +17,13 @@ public interface FnInterface {
 	public static int MAX_GENERATIONS = 40;//8;
 	public static double HIGHEST_PERCENTAGE = 1;
 	
+	//Permite cortar tan pronto se encuentra un individuo con aptitud maxima
 	public static final boolean CUT_AT_FIRST_BEST = true;
 	
 	/* Altura maxima de los arboles que se generan para la poblacion o 
 	 * para la mutacion
 	 */ 
-	public static final int MAX_HEIGHT = 4;
+	public static final int MAX_HEIGHT = 0;
 	
 	//Elegimos el bit a resolver
 	public static final int BIT_TO_RESOLVE = 1;

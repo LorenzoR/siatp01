@@ -80,7 +80,7 @@ public class SyntaxTree {
 		
 		if ( pMut > randomGenerator.nextDouble() ) {
 			//System.out.println("------Muto- en " + originalTree);
-			return getRandomTree(randomGenerator.nextInt(maxH),randomGenerator.nextInt(2));
+			return getRandomTree(randomGenerator.nextInt(maxH+1),randomGenerator.nextInt(2));
 
 		}
 		else {
