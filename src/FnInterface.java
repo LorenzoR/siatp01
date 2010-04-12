@@ -10,11 +10,11 @@ public interface FnInterface {
 	
 	
 	/* Definiciones que caracterizan a la poblacion y su evolucion */	 
-	public static final int POPULATION_SIZE = 500;//600;
+	public static final int POPULATION_SIZE = 100;//600;
 	public static final double MUTATION_PROBABILITY = 0.001;	
-	public static final int SELECTION_SIZE = 200;//300;
+	public static final int SELECTION_SIZE = 6;//300;
 
-	public static int MAX_GENERATIONS = 40;//8;
+	public static int MAX_GENERATIONS = 20;//8;
 	public static double HIGHEST_PERCENTAGE = 1;
 	
 	//Permite cortar tan pronto se encuentra un individuo con aptitud maxima
@@ -26,7 +26,7 @@ public interface FnInterface {
 	public static final int MAX_HEIGHT = 0;
 	
 	//Elegimos el bit a resolver
-	public static final int BIT_TO_RESOLVE = 1;
+	public static final int BIT_TO_RESOLVE = 0;
 	
 	//Habilita info estadistica que se muestra al correr el engine
 	public static final boolean SHOW_MOST_FREQUENT_INDIVIDUAL = false;
