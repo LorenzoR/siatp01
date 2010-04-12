@@ -7,7 +7,6 @@ public class TerminalNode extends Node implements Cloneable {
 		public TerminalNode(String name, boolean value) {
 			this.value = value;
 			this.name = name;
-			super.marca = -1;
 		}
 
 		public boolean isTerminalNode() {
@@ -62,7 +61,7 @@ public class TerminalNode extends Node implements Cloneable {
 	    }
 		@Override
 		public String toString() {
-			return name + " (" + value + ")" + "(" + super.marca + ")";
+			return name + " (" + value + ")";
 		}
 		
 		public void setAnotherValue (FunctionNode node) {

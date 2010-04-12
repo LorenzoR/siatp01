@@ -1,7 +1,6 @@
 public abstract class Node implements Cloneable{
 
 	public Node tree;
-	public int marca;
 	
 	public abstract boolean value();
 	

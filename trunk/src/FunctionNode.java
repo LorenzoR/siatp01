@@ -8,7 +8,6 @@ public class FunctionNode extends Node implements Cloneable {
 		this.function = function;
 		this.left = left;
 		this.right = right;
-		super.marca = -1;
 	}
 
 	public boolean isFunctionNode() {
@@ -93,7 +92,7 @@ public class FunctionNode extends Node implements Cloneable {
 	    }
 	@Override
 	public String toString() {
-		return this.function + "(" + super.marca + ")";
+		return this.function;
 	}
 	
 	public int size() {
