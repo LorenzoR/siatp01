@@ -85,7 +85,10 @@ public class Engine {
 		Subject resultSubject = new Subject(null, 0);
 		
 		stats.setPopulation(population);
-		percentage = stats.getMostFrequentSubject(resultSubject);		
+		percentage = stats.getMostFrequentSubject(resultSubject);	
+		System.out.println("\tAptitud Promedio = " + stats.getPopulationAvgFitness());
+		System.out.println("\tAptitud del Mejor Individuo = " + stats.getBestIndividualFitness());
+		System.out.println("\tFrecuencia del Mejor Individuo = " + percentage);
 		
 		/* El criterio de corte se alcanza cuando un individuo ocupa
 		 * un porcentaje dado de la poblacion. Esto se determina 
@@ -162,12 +165,14 @@ public class Engine {
 		//System.out.println("Poblacion Final luego de " + engine.getCurrentGeneration() + " generaciones\n" + population);
 		Individual selectedIndividual =  new Individual(st, FnInterface.MAX_HEIGHT, f, outputBit);
 		double percentage = getSelectedIndividual(population, selectedIndividual);
-		System.out.println("\nResultados para el BIT " + outputBit +":");
-		//System.out.println("\tIndividuo seleccionado = " + selectedIndividual + "\n\tFenotipo = " + myFunctions.decode( selectedIndividual.getChromosome() ) );
-		System.out.println("\tIndividuo seleccionado = ");
+		Node selectedNode = selectedIndividual.getChromosome();
+		
+		System.out.println("\nResultados para el BIT " + outputBit + " ,  SIZE = "+selectedNode.size()+" ,  FITNESS = "+selectedIndividual.fitnessValue());
+		System.out.println("Porcentaje en la Poblacion = " + percentage*100 + "% , luego de " + getCurrentGeneration() + " generaciones");
+		System.out.println("Individuo seleccionado = ");
 		selectedIndividual.getChromosome().printPreorder();
 		results.add(selectedIndividual.getChromosome());
-		System.out.println("\tPorcentaje en la Poblacion = " + percentage*100 + "% , luego de " + getCurrentGeneration() + " generaciones");
+		
 	}
 	/**
 	 * @param args
@@ -188,14 +193,9 @@ public class Engine {
 		//Inicializo la poblacion, el paramero algType define si voy a minimizar o maximizar
 		ArrayList<Population> populations = engine.populationInit();		
 		
-		for( int i=0 ; i<FnInterface.OUTPUT_BITS ; i++ ){
+		int i = FnInterface.BIT_TO_RESOLVE;
+		//for( int i=0 ; i<FnInterface.OUTPUT_BITS ; i++ ){			
 			Population population = populations.get(i);
-			
-			//System.out.println("====> POPULATION " + i);
-			//System.out.println(population);
-			//population.print();
-			
-			
 			ArrayList<Individual> parents;
 			ArrayList<Individual> offspring;
 			
@@ -204,17 +204,17 @@ public class Engine {
 				offspring = engine.reproduction(parents, i);			
 				population = (Population)engine.replacement(population, offspring);
 				engine.incrementCurrentGeneration();
-				System.out.println("Aptitud Promedio = " + stats.getPopulationAvgFitness());
-				System.out.println("Aptitud del Mejor Individuo = " + stats.getBestIndividualFitness());
 				System.out.println("Iteracion " + engine.getCurrentGeneration());
 			}	
 			engine.showEngineParams();
 			engine.showResult(population, i);
+			//engine.currentGeneration = 0;
 			
-		}
-		engine.showAllResults();	
+		//}
+		//engine.showAllResults();	
 	}
 
+	@SuppressWarnings("unused")
 	private void showAllResults() {
 		// TODO Auto-generated method stub		
 		for( int i=0 ; i<results.size() ; i++ ){

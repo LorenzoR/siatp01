@@ -10,18 +10,20 @@ public interface FnInterface {
 	
 	
 	/* Definiciones que caracterizan a la poblacion y su evolucion */	 
-	public int POPULATION_SIZE = 10;//600;
+	public int POPULATION_SIZE = 500;//600;
 	public double MUTATION_PROBABILITY = 0.001;	
-	public int SELECTION_SIZE = 5;//300;
+	public int SELECTION_SIZE = 200;//300;
 
-	public int MAX_GENERATIONS = 20;//8;
+	public int MAX_GENERATIONS = 3;//8;
 	public double HIGHEST_PERCENTAGE = 1;
 		
 	/* Altura maxima de los arboles que se generan para la poblacion o 
 	 * para la mutacion
 	 */ 
-	public static final int MAX_HEIGHT = 2;
+	public static final int MAX_HEIGHT = 4;
 	
+	
+	public static final int BIT_TO_RESOLVE = 1;
 	/* Tenemos CANT_INPUTS palabras de entrada, cada una con BITS_PER_INPUR 
 	 * bit. Y en la salida
 	 * Si la cantidad de entradas son 2 y es un bit por entrada=> A0 y B0

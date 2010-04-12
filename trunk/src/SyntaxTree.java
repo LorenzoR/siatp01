@@ -43,8 +43,8 @@ public class SyntaxTree {
 
 	// Metodos usados para generar als arboles: 0 = full, 1 = grow
 	public Node getRandomTree(int maxD, int method) {
-		double terminalProb = (double)terminalSet.size() / (terminalSet.size() + functionSet.size());
-		//double terminalProb = 0.5;
+		//double terminalProb = (double)terminalSet.size() / (terminalSet.size() + functionSet.size());
+		double terminalProb = 0.5;
 		if ( maxD == 0 || ( method == 1 && randomGenerator.nextFloat() < terminalProb ) ) {
 			String terminalString = chooseRandomElement(auxTerminalSet);
 			TerminalNode nodo = new TerminalNode(terminalString, getTerminalValue(terminalString));
