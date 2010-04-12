@@ -5,25 +5,34 @@ public interface FnInterface {
 	public enum SELECT_TYPE{UNIVERSAL, ELITE, ROULETTE, ELITE_ROULETTE, ELITE_UNIVERSAL};
 	
 	/*Defino que metodo se usara para la seleccion y el reemplazo*/
-	public final SELECT_TYPE CONFIG_SELECTION = SELECT_TYPE.UNIVERSAL;
-	public final SELECT_TYPE CONFIG_REPLACEMENT = SELECT_TYPE.UNIVERSAL;
+	public static final SELECT_TYPE CONFIG_SELECTION = SELECT_TYPE.UNIVERSAL;
+	public static final SELECT_TYPE CONFIG_REPLACEMENT = SELECT_TYPE.UNIVERSAL;
 	
 	
 	/* Definiciones que caracterizan a la poblacion y su evolucion */	 
-	public int POPULATION_SIZE = 500;//600;
-	public double MUTATION_PROBABILITY = 0.001;	
-	public int SELECTION_SIZE = 200;//300;
+	public static final int POPULATION_SIZE = 500;//600;
+	public static final double MUTATION_PROBABILITY = 0.001;	
+	public static final int SELECTION_SIZE = 200;//300;
 
-	public int MAX_GENERATIONS = 3;//8;
-	public double HIGHEST_PERCENTAGE = 1;
-		
+	public static int MAX_GENERATIONS = 40;//8;
+	public static double HIGHEST_PERCENTAGE = 1;
+	
+	public static final boolean CUT_AT_FIRST_BEST = true;
+	
 	/* Altura maxima de los arboles que se generan para la poblacion o 
 	 * para la mutacion
 	 */ 
 	public static final int MAX_HEIGHT = 4;
 	
-	
+	//Elegimos el bit a resolver
 	public static final int BIT_TO_RESOLVE = 1;
+	
+	//Habilita info estadistica que se muestra al correr el engine
+	public static final boolean SHOW_MOST_FREQUENT_INDIVIDUAL = false;
+	public static final boolean SHOW_AVG_FITNESS = true;
+	public static final boolean SHOW_AVG_COUNT_NODES = true;	
+	//public static final boolean SHOW_AVG_HEIGHT = false;
+	
 	/* Tenemos CANT_INPUTS palabras de entrada, cada una con BITS_PER_INPUR 
 	 * bit. Y en la salida
 	 * Si la cantidad de entradas son 2 y es un bit por entrada=> A0 y B0

@@ -7,6 +7,10 @@ import java.util.List;
 public class Statistics {
 	private ArrayList<Subject> subjects;
 	private int total;	
+	private double avgFitness;
+	private double avgCountNodes;
+	//private double avgHeight;
+	private int maxFitness;
 	
 	public void setPopulation( Population population){
 		subjects = new ArrayList<Subject>();
@@ -20,6 +24,23 @@ public class Statistics {
 			else
 				subjects.get(index).incrementFrequency();	
 		}
+		
+		avgFitness = 0;
+		maxFitness = 0;
+		avgCountNodes = 0;
+		int dim = subjects.size();
+		for( int i=0 ; i< dim ; i++ ){
+			int currentFitness = subjects.get(i).getIndividual().fitnessValue(); 
+			if( currentFitness > maxFitness )
+				maxFitness = currentFitness;
+			if( FnInterface.SHOW_AVG_FITNESS )
+				avgFitness += currentFitness;
+			if( FnInterface.SHOW_AVG_COUNT_NODES )
+				avgCountNodes += subjects.get(i).getIndividual().getChromosome().size();
+		}
+		avgFitness = avgFitness/dim;
+		avgCountNodes = avgCountNodes/dim;
+			
 			
 	}
 	@SuppressWarnings("unchecked")
@@ -39,14 +60,19 @@ public class Statistics {
 	}
 	
 	public double getPopulationAvgFitness(){
+		return avgFitness;
+		/*
 		double sum = 0;
 		for( int i=0 ; i< subjects.size() ; i++ ){
 			sum += subjects.get(i).getIndividual().fitnessValue();
 		}
 		return sum/subjects.size();
+		*/
 	}
 	
 	public int getBestIndividualFitness(){
+		return maxFitness;
+		/*
 		int maxFitness = 0;	
 		for( int i=0 ; i< subjects.size() ; i++ ){
 			int currentFitness = subjects.get(i).getIndividual().fitnessValue(); 
@@ -54,6 +80,17 @@ public class Statistics {
 				maxFitness = currentFitness;
 		}
 		return maxFitness;
+		*/
+	}
+	public double getPopulationAvgCountNodes(){
+		return avgCountNodes;
+		/*
+		double sum = 0;
+		for( int i=0 ; i< subjects.size() ; i++ ){
+			sum += subjects.get(i).getIndividual().getChromosome().size();
+		}
+		return sum/subjects.size();
+		*/
 	}
 	
 }

@@ -82,30 +82,48 @@ public class Engine {
 	*/
 	public boolean EndCondition(Population population){		
 		double percentage;
-		Subject resultSubject = new Subject(null, 0);
-		
+		Subject resultSubject = new Subject(null, 0);		
 		stats.setPopulation(population);
-		percentage = stats.getMostFrequentSubject(resultSubject);	
-		System.out.println("\tAptitud Promedio = " + stats.getPopulationAvgFitness());
-		System.out.println("\tAptitud del Mejor Individuo = " + stats.getBestIndividualFitness());
-		System.out.println("\tFrecuencia del Mejor Individuo = " + percentage);
+		int bestFitness = stats.getBestIndividualFitness();
+		percentage = stats.getMostFrequentSubject(resultSubject);
+		System.out.println("\tAptitud del Mejor Individuo = " + bestFitness);
+		if( FnInterface.SHOW_AVG_FITNESS )
+			System.out.println("\tAptitud Promedio = " + stats.getPopulationAvgFitness());
+		if( FnInterface.SHOW_AVG_COUNT_NODES )
+			System.out.println("\tCantidad de nodos promedio = " + stats.getPopulationAvgCountNodes());
+		if( FnInterface.SHOW_MOST_FREQUENT_INDIVIDUAL )
+			System.out.println("\tFrecuencia del Mejor Individuo = " + percentage);
 		
-		/* El criterio de corte se alcanza cuando un individuo ocupa
-		 * un porcentaje dado de la poblacion. Esto se determina 
-		 * mediante la constante HIGHEST_PERFORMANCE
-		 * En caso la convergencia sea muy lenta y no se alcanze dicho
-		 * porcentaje, se corta al llegar a MAX_GENERATIONS 
-		 */
-		if( this.currentGeneration >= FnInterface.MAX_GENERATIONS )
-			return true;
-		if( percentage >= FnInterface.HIGHEST_PERCENTAGE ){
-			//System.out.println("The ONE = " +  resultSubject.getIndividual() + "\t% = " + percentage);
-			return true;
+		if( FnInterface.CUT_AT_FIRST_BEST ){
+			 //int maxFitness = (int)Math.pow(2, FnInterface.INPUT_BITS);
+			 int maxFitness = 1 << FnInterface.INPUT_BITS;
+			 return bestFitness == maxFitness;
+			 /*
+			 if( bestFitness == maxFitness )
+				 return true;
+			 else
+				 return false;
+				 */
+		}else{
+			return this.currentGeneration >= FnInterface.MAX_GENERATIONS;
+			/*
+			if( this.currentGeneration >= FnInterface.MAX_GENERATIONS )
+				return true;
+			else
+				return false; 
+			*/
+			/*
+			if( percentage >= FnInterface.HIGHEST_PERCENTAGE ){
+				//System.out.println("The ONE = " +  resultSubject.getIndividual() + "\t% = " + percentage);
+				return true;
+			}
+			else{
+				//System.out.println("NOT YET, the best until now = " +  resultSubject.getIndividual() + "\t% = " + percentage);
+				return false;
+			}
+			*/
 		}
-		else{
-			//System.out.println("NOT YET, the best until now = " +  resultSubject.getIndividual() + "\t% = " + percentage);
-			return false;
-		}
+		
 	}
 	public ArrayList<Individual> selection( Population population){
 		ArrayList<Individual> resp = population.selection(selectionSize);
@@ -167,7 +185,7 @@ public class Engine {
 		double percentage = getSelectedIndividual(population, selectedIndividual);
 		Node selectedNode = selectedIndividual.getChromosome();
 		
-		System.out.println("\nResultados para el BIT " + outputBit + " ,  SIZE = "+selectedNode.size()+" ,  FITNESS = "+selectedIndividual.fitnessValue());
+		System.out.println("\nResultados para el BIT " + outputBit + " ,  CANT NODE = "+selectedNode.size()+" ,  FITNESS = "+stats.getBestIndividualFitness());
 		System.out.println("Porcentaje en la Poblacion = " + percentage*100 + "% , luego de " + getCurrentGeneration() + " generaciones");
 		System.out.println("Individuo seleccionado = ");
 		selectedIndividual.getChromosome().printPreorder();
