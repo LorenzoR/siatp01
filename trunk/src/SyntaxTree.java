@@ -6,12 +6,19 @@ import java.util.Map.Entry;
 
 public class SyntaxTree {
 
+	/* Nodos terminales y su valor */
 	private Map<String, Boolean> terminalSet;
+	/* Nombres de nodos terminales */
 	private ArrayList<String> auxTerminalSet;
+	/* Nodos funcion y su aridad */
 	private Map<String, Integer> functionSet;
+	/* Nombres de nodos funcion */
 	private ArrayList<String> auxFunctionSet;
+	/* Aridades de funciones */
 	private ArrayList<Integer> arity;
+	/* Valores de nodos terminales */
 	private ArrayList<Boolean> terminalValues;
+	/* Generador de numeros aleatorios */
 	private Random randomGenerator = new Random();
 
 	
@@ -79,7 +86,6 @@ public class SyntaxTree {
 	public Node mutate(double pMut, int maxH, Node originalTree) {
 		
 		if ( pMut > randomGenerator.nextDouble() ) {
-			//System.out.println("------Muto- en " + originalTree);
 			return getRandomTree(randomGenerator.nextInt(maxH+1),randomGenerator.nextInt(2));
 
 		}

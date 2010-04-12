@@ -29,7 +29,6 @@ public class Individual implements Cloneable{
 		try {
 			chromosome = (Node)otherChromosome.clone();
 		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
 			System.out.println("Individual: "+e.getMessage());
 		}
 	}
@@ -43,6 +42,7 @@ public class Individual implements Cloneable{
 		System.out.print("\n");
 
 	}
+	
 	/*Para poder usar println() en forma transparente*/
 	public String toString() {
 		StringBuffer resp = new StringBuffer();		
@@ -52,7 +52,6 @@ public class Individual implements Cloneable{
 	
 	/*Para poder hacer copias de los individuos en caso un individuo sea seleccionado 2 veces
 	 * Es decir en ese caso deben ser DOS INDIVIDUOS DIFERENTES */
-	@SuppressWarnings("unchecked")
 	public Object clone(){
         Individual obj=null;
         try{
@@ -63,7 +62,6 @@ public class Individual implements Cloneable{
         try {
 			obj.chromosome = (Node)obj.chromosome.clone();
 		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         return obj;
