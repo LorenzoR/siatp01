@@ -57,29 +57,7 @@ public class Engine {
 			populations.add(new Population(this.populationSize,st, f, maxHeight, i ) );
 		return populations;
 	}
-	/*
-	public Population populationInit(FnInterface.ALG_TYPE type ){
-		Population population;		
-		
-		if( type == FnInterface.ALG_TYPE.MINIMIZE )			
-			population = new PopulationMin(0, chromosomeSize);
-		else
-			population = new PopulationMax(0, chromosomeSize);
-		
-		//Genero los individuos que formaran la poblacion
-		for( int i=0 ; i< this.populationSize ; i++ ){
-			//Genero un FENOTIPO: numero real entre 0 y 1 ...
-			Random number = new Random();
-			double fenotype = number.nextDouble();
-			
-			  			
-			ArrayList<Boolean> chromosome = myFunctions.encode(fenotype, FnInterface.CHROMOSOME_SIZE );
-			Individual genotype = new Individual( chromosome );			
-			population.addIndividual(genotype);			
-		}
-		return population;
-	}
-	*/
+	
 	public boolean EndCondition(Population population){		
 		double percentage;
 		Subject resultSubject = new Subject(null, 0);		
