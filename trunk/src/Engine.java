@@ -72,8 +72,15 @@ public class Engine {
 		if( FnInterface.SHOW_MOST_FREQUENT_INDIVIDUAL )
 			System.out.println("\tFrecuencia del Mejor Individuo = " + percentage);
 		
+		int maxFitness = 1 << FnInterface.INPUT_BITS;
+		
+		if( FnInterface.NEVER_CUT ){
+			if(  bestFitness == maxFitness )
+				showResult(population, FnInterface.BIT_TO_RESOLVE);
+			return false;
+		}
 		if( FnInterface.CUT_AT_FIRST_BEST ){			 
-			 int maxFitness = 1 << FnInterface.INPUT_BITS;
+			 
 			 return bestFitness == maxFitness;			
 		}else{
 			return this.currentGeneration >= FnInterface.MAX_GENERATIONS;			
@@ -141,7 +148,7 @@ public class Engine {
 		double percentage = getSelectedIndividual(population, selectedIndividual);
 		Node selectedNode = selectedIndividual.getChromosome();
 		*/
-		System.out.println("\nResultados para el BIT " + outputBit + " ,  CANT NODE = "+stats.getMaxFitnessNode()+" ,  FITNESS = "+stats.getBestIndividualFitness());
+		System.out.println("\nResultados para el BIT " + outputBit + " ,  CANT NODE = "+stats.getMaxFitnessNode().size()+" ,  FITNESS = "+stats.getBestIndividualFitness());
 		//System.out.println("Porcentaje en la Poblacion = " + percentage*100 + "% , luego de " + getCurrentGeneration() + " generaciones");
 		System.out.println("Individuo seleccionado = ");
 		stats.getMaxFitnessNode().printPreorder();	
