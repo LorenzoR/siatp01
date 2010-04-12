@@ -11,6 +11,7 @@ public class Statistics {
 	private double avgCountNodes;
 	//private double avgHeight;
 	private int maxFitness;
+	private Node maxNode;
 	
 	public void setPopulation( Population population){
 		subjects = new ArrayList<Subject>();
@@ -31,8 +32,10 @@ public class Statistics {
 		int dim = subjects.size();
 		for( int i=0 ; i< dim ; i++ ){
 			int currentFitness = subjects.get(i).getIndividual().fitnessValue(); 
-			if( currentFitness > maxFitness )
+			if( currentFitness > maxFitness ){
 				maxFitness = currentFitness;
+				maxNode = subjects.get(i).getIndividual().getChromosome();
+			}				
 			if( FnInterface.SHOW_AVG_FITNESS )
 				avgFitness += currentFitness;
 			if( FnInterface.SHOW_AVG_COUNT_NODES )
@@ -91,6 +94,9 @@ public class Statistics {
 		}
 		return sum/subjects.size();
 		*/
+	}
+	public Node getMaxFitnessNode(){
+		return maxNode; 
 	}
 	
 }
