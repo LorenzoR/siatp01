@@ -92,21 +92,25 @@ public class Population implements Cloneable {
 		Collections.sort(aptitud, Collections.reverseOrder());
 		
 		List<Integer> best = aptitud.subList(0, cant);
+
 		
-		//System.out.println("Population es " + population);
-		//System.out.println("Aptitudes es " + aptitud);
-		//System.out.println("Best es " + best);
-		
-		for ( int i = 0, j = 0; i < this.size() && j < cant; i++ ) {
+		/*for ( int i = 0, j = 0; i < this.size() && j < cant; i++ ) {
 			if ( best.contains(population.get(i).fitnessValue())) {
 				//System.out.println("Best contiene a " + this.fitness(population.get(i)));
 				//System.out.println("Elijo " + i);
 				resp.add( j++, (Individual)population.get(i).clone() );
 			}
-		}
+		}*/
 		
-		//System.out.println("Elite Selection (elijo " + cant + " ) " + best);
-		//System.out.println("Finalmente, me quedo con " + resp);
+		for ( int i = 0; i < best.size(); i++ ) {
+			for ( int j = 0; j < this.size(); j++ ) {
+				if ( best.get(i) == population.get(j).fitnessValue() ) {
+					resp.add( i, (Individual)population.get(j).clone() );
+					//System.out.println("Agrego " + population.get(j).fitnessValue());
+					break;
+				}
+			}
+		}
 		
 		return resp;
 	}
